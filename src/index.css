@@ -1,13 +1,199 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .nav__item {
+    @apply font-bold text-[18px] text-muted-color;
+  }
+  .nav__item .active {
+    @apply text-[black]  border-b-common-color border-b-4;
+  }
+
+  .nav__icon {
+    @apply lg:bg-body-bg rounded-full text-[14px] w-[33px] h-[33px] flex items-center justify-center cursor-pointer bg-[#a3a3a3] capitalize text-black lg:text-[#5a5a5a];
+  }
+  .nav__icon.active {
+    @apply border-2 border-common-color;
+  }
+  .upload__btn {
+    @apply hover:bg-gray-400/80 rounded-full h-[35px] w-[35px] flex items-center justify-center transition-all duration-300 cursor-pointer;
+  }
+  
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.ant-space-item a {
+  color: #1677ff !important;
+}
+
+.ant-btn-primary {
+  color: #fff !important;
+  background-color: #1677ff !important;
+  box-shadow: 0 2px 0 rgb(5 145 255 / 10%) !important;
+}
+
+input {
+  outline: none;
+  width: 100%;
+}
+select {
+  outline: none;
+  border: 1px solid lightgray;
+}
+select:hover {
+  background-color: lightgray;
+  transition: all 0.3s;
+}
+label {
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out,
+    -webkit-transform 0.1s ease-in-out;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 10px;
+}
+
+.modal__cross {
+  transform: translate(-50%, -50%);
+  right: calc(50% - 285px) !important;
+  background-color: #e4e4e4;
+  height: 40px;
+  width: 40px;
+  top: 30vh;
+  bottom: auto;
+}
+
+.carousel.carousel-slider {
+  overflow: visible !important;
+}
+
+img {
+  object-fit: contain;
+}
+
+.tree__view > ul {
+  max-width: 100% !important;
+}
+
+.tree__view > ul > li {
+  border-bottom: 1px solid #e4e4e4;
+}
+.MuiTreeItem-content {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  padding: 5px 0;
+}
+.MuiTreeItem-label {
+  width: 75% !important;
+}
+.middle-body {
+  width: 500px;
+}
+.nvt__carousel > img {
+  width: 65px !important;
+}
+
+.thumbs-wrapper {
+  margin: 1px !important;
+}
+.thumb {
+  margin: 1px !important;
+  padding: 1px !important;
+  border-radius: 3px;
+}
+.thumb.selected,
+.thumb:hover {
+  border: 1px solid gray !important;
+}
+
+.MuiTreeItem-label svg {
+  padding: 1px !important;
+  height: 12px !important;
+}
+
+.MuiTreeItem-content {
+  padding: 0 !important;
+}
+.MuiBox-root {
+  padding: 0 !important;
+}
+
+.common__fieldset {
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+}
+.common__fieldset legend {
+  width: auto;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  margin-left: 8px !important;
+  font-size: 13.5px !important;
+  color: black !important;
+  text-transform: capitalize;
+}
+
+.common__fieldset input {
+  border: none !important;
+  padding-bottom: 10px;
+}
+.common__fieldset input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ant-select-selector {
+  min-width: 150px;
+}
+.exception_Select{
+  width: 100px !important;
+}
+.ant-image-preview-img-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-select-tree-switcher{
+  position: absolute !important;
+  width: 100% !important;
+  z-index: 20000 !important;
+  text-align: right !important;
+  padding-right: 15px !important;
+}
+
+.ant-select-selection__placeholder{
+  color : blue !important;
+}
+
+*::placeholder, .ant-select-selection-placeholder {
+  color: black !important;
+  text-transform: capitalize !important;
+  opacity: 0.7 !important;
+}
+
+
+
+
+
+@media screen and (max-width: 1024px) {
+  .modal__cross {
+    right: calc(50% - 265px) !important;
+  }
+}
+@media screen and (max-width: 500px) {
+  .modal__cross {
+    right: -10px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .middle-body {
+    width: 100% !important;
+  }
 }
