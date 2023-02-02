@@ -6,6 +6,8 @@ import Login from "./components/login/Login";
 import Login1 from "./components/login/Login1";
 import Signup from "./components/login/Signup";
 import Home from "./components/main/home/home"
+import Search from "./components/search/Search";
+import AddStoryPost from "./components/storyAddPost/StoryAddPost"
 
 function App() {
   return (
@@ -24,6 +26,13 @@ function App() {
           <Signup />
       </div>
       < Home />
+      </div>
+      <div className="grid grid-rows-4 grid-cols-4 bg-gray-100">
+        <div className="col-span-1 col-start-3">
+          < Search />
+          < AddStoryPost />
+          </div>
+        
       </div>
       
     </div>

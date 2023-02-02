@@ -16,8 +16,8 @@ const Login1 = () => {
     let finalData ={}
     if(x==true){
       finalData = {
-        name: login.name,
-        email: login.emailphone,
+        
+        emailphone: login.emailphone,
         password: login.password
       }
       
@@ -25,8 +25,8 @@ const Login1 = () => {
     }
     else{
       finalData = {
-        name: login.name,
-        phone: login.emailphone,
+        
+        emailphone: login.emailphone,
         password: login.password
       }
     }
@@ -43,10 +43,35 @@ const Login1 = () => {
   }
 
 
-  async function loginUser(event) {
-    event.preventDefault();
+  async function loginUser(formdata) {
+    // event.preventDefault();
 
-    async function sendData (formdata ) { await axios.post("https://apiweb.cyclic.app/api/auth/login", formdata,{withCredentials:true}) }
+    // const sendData = await axios.post("https://apiweb.cyclic.app/api/auth/login", formdata,{withCredentials:true},{
+
+    // body: JSON.stringify(formdata),
+
+    // });
+  
+    
+  
+    // const data = await sendData.json();
+    // console.log(data);
+    const response = await fetch(
+      "https://apiweb.cyclic.app/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+
+        body: JSON.stringify(formdata),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+  
+  }
 
     // const response = await fetch(
     //   "https://apiweb.cyclic.app/api/auth/login",
@@ -64,9 +89,9 @@ const Login1 = () => {
     //   }
     // );
 
-    const data = await response.json();
-    console.log(data);
-  }
+  //   const data = await response.json();
+  //   console.log(data);
+  // }
 
   
   
@@ -120,7 +145,7 @@ const Login1 = () => {
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 name="emailphone"
-                onChange={(e) => setEmail(e)}
+                onChange={(e) => onInputChange(e)}
                 id="floatingInput"
                 placeholder="name@example.com"
               />
