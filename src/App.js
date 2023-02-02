@@ -27,8 +27,8 @@ function App() {
       </div>
       < Home />
       </div>
-      <div className="grid grid-rows-4 grid-cols-4 bg-gray-100">
-        <div className="col-span-1 col-start-3">
+      <div className=" flex justify-center items-center bg-gray-100">
+        <div className=" col-span-2">
           < Search />
           < AddStoryPost />
           </div>

@@ -69,6 +69,16 @@ const Login1 = () => {
     );
 
     const data = await response.json();
+
+        if (data.token){
+          alert("login Success")
+          window.location.href='/admin'
+          
+        }else{
+          alert("please Check Your Password or Email")
+        }
+
+
     console.log(data);
   
   }
