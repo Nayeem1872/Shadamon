@@ -6,7 +6,7 @@ import Home from "./adminPages/home/Home";
 import Admin from "./Admin"
 import Categories from "./adminComponents/settings/categories/Categories";
 import Location from "./adminComponents/settings/location/Location";
-import Datatable from "./adminComponents/locationDatatable/LocationDatatable"
+
 
 
 import {
