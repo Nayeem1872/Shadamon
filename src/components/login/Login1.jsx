@@ -70,12 +70,12 @@ const Login1 = () => {
 
     const data = await response.json();
 
-        if (data.token){
-          alert("login Success")
-          window.location.href='/admin'
+        if (data.isAdmin){
+          alert("please Check Your Password or Email")
           
         }else{
-          alert("please Check Your Password or Email")
+        
+          window.location.href='/admin'
         }
 
 
