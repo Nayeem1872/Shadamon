@@ -5,7 +5,8 @@ import Home from "./adminPages/home/Home";
 // import New from "./adminPages/new/New"
 import Admin from "./Admin"
 import Categories from "./adminComponents/settings/categories/Categories";
-import Location from "./adminComponents/settings/location/Location";
+import Location from "./adminComponents/settings/location/Addlocation";
+import GetLocation from "./adminComponents/settings/location/GetLocation";
 
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/admin" element={<Home/>}/>
              <Route path="/admin/categories" element={< Categories />}/>
              <Route path="/admin/location" element={< Location />}/>
+             <Route path="/admin/location" element={< GetLocation />}/>
               
               {/* <Route path="/admin/new" element={<New/>}/>
               <Route path="/admin/categories" >

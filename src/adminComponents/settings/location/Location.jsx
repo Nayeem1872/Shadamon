@@ -3,8 +3,97 @@ import Sidebar from '../../sidebar/Sidebar';
 import Navbar from '../../navbar/Navbar';
 import Datatable from '../../locationDatatable/LocationDatatable'
 import './location.scss';
+import Getlocation from './GetLocation';
+import Test from './Test';
+import { useState } from 'react';
+
 
 const Location = () => {
+  const [data, setData] = useState({
+    locationName: "",
+    ordering: "",
+    status: ""
+  });
+  
+  function handleChange(e) {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+  }
+  
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch("https://sadamon.onrender.com/api/product/location", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+
+//  const [data,setData] = useState();
+//  const onInputChange = (e) => {
+//   setData({ ...data, [e.target.id]: e.target.value });
+  
+// };
+// const finalObj = (x)=>{
+//   console.log(x);
+//   let finalData ={}
+//   if(x==true){
+//     finalData = {
+//       locationName: data.location,
+//       ordering: data.ordering,
+//       status: data.status
+//     }
+    
+    
+//   }
+//   else{
+//     finalData = {
+//       locationName: data.location,
+//       ordering: data.ordering,
+//       status: data.status
+//     }
+//   }
+//   location(finalData)
+//   console.log(finalObj);
+
+// }
+
+// const submitForm = (e)=>{
+//   e.preventDefault()
+//   console.log(data.location)
+
+// }
+// async function  location(formdata) {
+    
+//   const response = await fetch(
+//     "https://sadamon.onrender.com/api/product/location",
+//     {
+//       method: "POST",
+//       headers: {
+//         "Content-type": "application/json",
+//       },
+
+//       body: JSON.stringify(formdata),
+//     }
+//   );
+
+//   const data = await response.json();
+//   console.log(data);
+// }
+
+
+
+
   return (
   <div>
      <div className='list'>
@@ -189,15 +278,13 @@ const Location = () => {
 
 
 
-            <button type="button"  class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Success</button>
+         
           </form>
 
 
 
 
-        <button type="button"
-          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-          data-bs-dismiss="modal" aria-label="Close"></button>
+       
       </div>
      
       <div
@@ -217,13 +304,33 @@ const Location = () => {
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {/* Add Location */}
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalCenter1" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
 <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
     <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
       <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
         
-      <form method="post">
+      <form onSubmit={handleSubmit}>
             
       {/* <input type="search" id="locationId" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-haspopup="listbox" aria-owns="locationId_list" aria-autocomplete="list" aria-controls="locationId_list" aria-activedescendant="locationId_list_0" aria-required="true" readonly="" unselectable="on" value="" style="opacity: 0;" aria-expanded="false"/> */}
             
@@ -237,7 +344,10 @@ const Location = () => {
 
 
       <input
-        type="text"
+     type="text"
+     id="locationName"
+     onChange={handleChange}
+     value={data.locationName}
         class="
           form-control
           block
@@ -255,19 +365,12 @@ const Location = () => {
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
         "
-        id="exampleFormControlInput3"
+        
         placeholder="Location Name"
       />
     </div>
 {/* Date */}
-<div class="flex items-center justify-center">
-  <div class="datepicker relative form-floating mb-3 xl:w-96" data-mdb-toggle-button="false">
-    <input type="text"
-      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      placeholder="Select a date" data-mdb-toggle="datepicker" />
-    <label for="floatingInput" class="text-gray-700">Select a date</label>
-  </div>
-</div>
+
 {/* Number */}
 <div class="flex justify-center">
   <div class="mb-3 xl:w-96">
@@ -275,7 +378,10 @@ const Location = () => {
       >Number input</label
     > */}
     <input
-      type="number"
+    type="text"
+    id="ordering"
+    onChange={handleChange}
+    value={data.ordering}
       class="
         form-control
         block
@@ -293,7 +399,7 @@ const Location = () => {
         m-0
         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
       "
-      id="exampleNumber0"
+      
       placeholder="Order"
     />
   </div>
@@ -305,17 +411,22 @@ const Location = () => {
 <div class="flex">
   <div>
     <div class="form-check">
-      <input class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+      <input
+      
+      id="status"
+      onChange={handleChange}
+      value={data.status}
+      
+      class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" />
       <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault1">
        Active
       </label>
-    </div>
-    <div class="form-check">
       <input class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
       <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
         Inactive
       </label>
     </div>
+  
   </div>
 </div>
 
@@ -332,7 +443,8 @@ const Location = () => {
       <div
         class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
        
-        <button type="button"
+        <button type="submit" 
+        // onClick={submitForm}
           class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">
           Save changes
         </button>
@@ -352,15 +464,22 @@ const Location = () => {
         {/* < Datatable /> */}
         
         </div>
-    
+        <div>
+
+< Getlocation />
+< Test />
+
+</div>
       </div>
     </div>
     
   
   
   </div>
+  
   </div>
   )
+
 }
 
 export default Location

@@ -69,13 +69,16 @@ const Login1 = () => {
     );
 
     const data = await response.json();
+      // console.log(data.data.isAdmin)
 
-        if (data.isAdmin){
-          alert("please Check Your Password or Email")
+        if (data.data.isAdmin){
+          window.location.href='/admin'
+
           
         }else{
-        
-          window.location.href='/admin'
+          window.location.href='/'
+          
+          
         }
 
 
