@@ -21,7 +21,7 @@ const Addlocation = () => {
       
       function handleChange(e) {
         const newData = { ...data };
-        newData[e.target.id] = e.target.value;
+        newData[e.target.name] = e.target.value;
         setData(newData);
       }
       
@@ -37,7 +37,7 @@ const Addlocation = () => {
           });
           const result = await response.json();
           console.log(result);
-          window.location.href='/admin/location'
+          // window.location.href='/admin/location'
         } catch (error) {
           console.error(error);
         }
@@ -60,6 +60,48 @@ useEffect(() => {
       getUser()
       console.log(locationName)
   }, []);
+
+
+// Add SubLocation
+
+const [data1, setData1] = useState({
+    locationId: "",
+    subLocationName: "",
+    link: "",
+    ordering: "",
+    status: "",
+  });
+  
+  function handleChange(e) {
+    const newData = { ...data1 };
+    newData[e.target.id] = e.target.value;
+    setData1(newData);
+  }
+  
+  const handleSubmit1 = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("https://sadamon.onrender.com/api/product/postsublocation", data1, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      
+    //   console.log(response.sublocations.data);
+      console.log(response.data);
+    //   window.location.href='/admin/location'
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+
+
+
+
+
+
 
 
 
@@ -91,7 +133,7 @@ useEffect(() => {
                     <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
                       <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                         <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                          <form method="post">
+                          <form method="post" onSubmit={handleSubmit1}>
                       
       
                             <div class="mb-3 xl:w-96">
@@ -148,7 +190,11 @@ useEffect(() => {
                               {/* SubLocation */}
       
                               <input
-                                type="text"
+                               type="text"
+                               id="subLocationName"
+                               onChange={handleChange}
+                               value={data1.subLocationName}
+                               
                                 class="
                    form-control
                    block
@@ -166,24 +212,11 @@ useEffect(() => {
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                  "
-                                id="exampleFormControlInput3"
+                                
                                 placeholder="Sub Location"
                               />
                             </div>
-                            {/* Date */}
-                            <div class="flex items-center justify-center">
-                              <div
-                                class="datepicker relative form-floating mb-3 xl:w-96"
-                                data-mdb-toggle-button="false"
-                              >
-                                <input
-                                  type="text"
-                                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                  placeholder="Select a date"
-                                  data-mdb-toggle="datepicker"
-                                />
-                              </div>
-                            </div>
+                         
                             {/* Number */}
                             <div class="flex justify-center">
                               <div class="mb-3 xl:w-96">
@@ -191,7 +224,12 @@ useEffect(() => {
                >Number input</label
              > */}
                                 <input
-                                  type="number"
+                                id="ordering" 
+                                value={data1.ordering} 
+                                onChange={handleChange} 
+                                 
+                                
+                                type="number"
                                   class="
                  form-control
                  block
@@ -209,7 +247,7 @@ useEffect(() => {
                  m-0
                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                "
-                                  id="exampleNumber0"
+                                  
                                   placeholder="Number input"
                                 />
                               </div>
@@ -221,6 +259,9 @@ useEffect(() => {
                >URL input</label
              > */}
                                 <input
+                                id="link" 
+                                // value={data1.link} 
+                                onChange={(e) => handleChange(e)} 
                                   type="url"
                                   class="
                  form-control
@@ -239,7 +280,7 @@ useEffect(() => {
                  m-0
                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                "
-                                  id="exampleURL0"
+                                  
                                   placeholder="URL input"
                                 />
                               </div>
@@ -250,10 +291,14 @@ useEffect(() => {
                               <div>
                                 <div class="form-check">
                                   <input
+                                  id="status" 
+                                  value={data1.status} 
+                                  onChange={(e) => handleChange(e)}
+                                  
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
                                     name="flexRadioDefault"
-                                    id="flexRadioDefault1"
+                                    
                                   />
                                   <label
                                     class="form-check-label inline-block text-gray-800"
@@ -279,24 +324,24 @@ useEffect(() => {
                                 </div>
                               </div>
                             </div>
+                        <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+                          <button
+                            type="submit"
+                            class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                            >
+                            Save changes
+                          </button>
+                    </div>
                           </form>
                         </div>
       
-                        <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-                          <button
+                          {/* <button
                             type="button"
                             class="inline-block px-6 py-2.5 bg-purple-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out"
                             data-bs-dismiss="modal"
                           >
                             Close
-                          </button>
-                          <button
-                            type="button"
-                            class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                          >
-                            Save changes
-                          </button>
-                        </div>
+                          </button> */}
                       </div>
                     </div>
                   </div>
@@ -305,7 +350,34 @@ useEffect(() => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   {/* Add Location */}
+
+
+
+
+
+
+
+
+
+
+
+
+
                   <div
                     class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
                     id="exampleModalCenter1"
@@ -332,9 +404,9 @@ useEffect(() => {
       
                               <input
                                 type="text"
-                                id="locationName"
-                                onChange={handleChange}
-                                value={data.locationName}
+                                name="locationName"
+                                onChange={(e) => handleChange(e)}
+                                // value={data.locationName}
                                 class="
                    form-control
                    block
@@ -365,9 +437,9 @@ useEffect(() => {
              > */}
                                 <input
                                   type="number"
-                                  id="ordering"
-                                  onChange={handleChange}
-                                  value={data.ordering}
+                                  name="ordering"
+                                  onChange={(e) => handleChange(e)}
+                                  // value={data.ordering}
                                   class="
                  form-control
                  block
@@ -396,12 +468,13 @@ useEffect(() => {
                                 <div class="form-check">
                                   <input
                                 
-                                    id="status"
-                                    onChange={handleChange}
-                                    value={data.status}
+                                    // id="status"
+                                    name="status"
+                                    onChange={(e) => handleChange(e)}
+                                    // value={data.status}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
-                                    name="flexRadioDefault"
+                                    
                                     checked
                                   />
                                   <label
@@ -411,12 +484,13 @@ useEffect(() => {
                                     Active
                                   </label>
                                   <input
-                                    id="status"
-                                    onChange={handleChange}
-                                    value={data.status}
+                                    // id="status"
+                                    name="status"
+                                    onChange={(e) => handleChange(e)}
+                                    // value={data.status}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
-                                    name="flexRadioDefault"
+                                    
                                     // id="flexRadioDefault2"
                                     checked
                                   />

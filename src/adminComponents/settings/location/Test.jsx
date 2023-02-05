@@ -1,79 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-function Test() {
-  const [locationName, setLocations] = useState([]);
 
-  useEffect(() => {
-    const getUser = async () => {
-        try {
-          const reqData = await axios.get("https://sadamon.onrender.com/api/product/alllocations", { withCredentials: true });
-          setLocations(reqData.data.data);
-        } catch (error) {
-          console.error(error);
+const Test = () => {
+  const [showDetails, setShowDetails] = useState({});
+
+  const toggleDetails = name => {
+    setShowDetails({
+      ...showDetails,
+      [name]: !showDetails[name]
+    });
+  };
+
+  const data = [
+    { name: 'John', age: 30, city: 'New York' },
+    { name: 'Jane', age: 25, city: 'London' }
+  ];
+
+  const [data1, setData1] = useState({
+
+  });
+  
+  function handleChange(e) {
+    const newData = { ...data1 };
+    newData[e.target.id] = e.target.value;
+    setData1(newData);
+  }
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("https://sadamon.onrender.com/api/product/postsublocation", data1, {
+        headers: {
+          "Content-Type": "application/json"
         }
-      };
-      getUser()
-      console.log(locationName)
-  }, []);
+      });
+      console.log(response.data);
+    //   window.location.href='/admin/location'
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+
+
+
 
   return (
+
     <>
-    <table id="main-table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="#" class="show-details">John</a></td>
-      <td class="details-row">
-        <table>
-          <tbody>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map(({ name, age, city }) => (
+          <React.Fragment key={name}>
             <tr>
-              <td>Age</td>
-              <td>30</td>
+              <td>
+                <a href="#" onClick={() => toggleDetails(name)}>
+                  {name}
+                </a>
+              </td>
+              <td />
             </tr>
-            <tr>
-              <td>City</td>
-              <td>New York</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td><a href="#" class="show-details">Jane</a></td>
-      <td class="details-row">
-        <table>
-          <tbody>
-            <tr>
-              <td>Age</td>
-              <td>25</td>
-            </tr>
-            <tr>
-              <td>City</td>
-              <td>London</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-    
-    
-    
-    
-    
+            {showDetails[name] && (
+              <tr>
+                <td colSpan={2}>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Age</td>
+                        <td>{age}</td>
+                      </tr>
+                      <tr>
+                        <td>City</td>
+                        <td>{city}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
+        ))}
+      </tbody>
+    </table>
+    <form action=""  onSubmit={handleSubmit}>
+    <input type="text" id="locationId" onChange={handleChange} value={data1.locationId} placeholder="Number input" />
+<input type="text" id="subLocationName" onChange={handleChange} value={data1.subLocationName} placeholder="Number input" />
+<input type="text" id="link" onChange={handleChange} value={data1.link} placeholder="Number input"/>
+<input type="number" id="ordering" onChange={handleChange} value={data1.ordering} placeholder="Number input" />
+<input type="text" id="status" onChange={handleChange} value={data1.status} placeholder="Number input" />
+<button type='submit'>Submit</button>
+</form>
     </>
-  
   );
-}
+};
 
 export default Test;

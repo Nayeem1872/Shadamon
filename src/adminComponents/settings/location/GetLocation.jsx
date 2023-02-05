@@ -21,9 +21,9 @@ const Getlocation = () => {
       
   
     }
-    // if(firstCall===false){
-    //   setFirstcall(true)
-    // }
+    if(firstCall===false){
+      setFirstcall(true)
+    }
     
       getUser()
       
