@@ -13,35 +13,106 @@ import axios from 'axios';
 const Addlocation = () => {
 
     // Add Location
-    const [data, setData] = useState({
-        locationName: "",
-        ordering: "",
-        status: ""
-      });
+    const [data, setData] = useState();
+    const onInputChange = (e) => {
+      setData({ ...data, [e.target.name]: e.target.value });
       
-      function handleChange(e) {
-        const newData = { ...data };
-        newData[e.target.name] = e.target.value;
-        setData(newData);
+    };
+    const finalObj = (x)=>{
+      console.log(x);
+      let finalData ={}
+      if(x==true){
+        finalData = {
+          
+          locationName: data.locationName,
+          ordering: data.ordering,
+          status: data.status,
+        }
+        
+        
       }
-      
-      async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-          const response = await fetch("https://sadamon.onrender.com/api/product/location", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-          });
-          const result = await response.json();
-          console.log(result);
-          // window.location.href='/admin/location'
-        } catch (error) {
-          console.error(error);
+      else{
+        finalData = {
+          
+          locationName: data.locationName,
+          ordering: data.ordering,
+          status: data.status,
         }
       }
+      addData(finalData)
+      console.log(finalData);
+  
+    }
+
+    const submitForm = (e)=>{
+      e.preventDefault()
+      finalObj();
+      // let checkValue = isNaN(login.emailphone)
+      // checkValue ? finalObj(checkValue) : finalObj(checkValue)
+    }
+
+    async function addData(formdata) {
+      // event.preventDefault();
+  
+      // const sendData = await axios.post("https://apiweb.cyclic.app/api/auth/login", formdata,{withCredentials:true},{
+  
+      // body: JSON.stringify(formdata),
+  
+      // });
+    
+      
+    
+      // const data = await sendData.json();
+      // console.log(data);
+      const response = await fetch(
+        "https://sadamon.onrender.com/api/product/location",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+  
+          body: JSON.stringify(formdata),
+        }
+      );
+  
+      const data = await response.json();
+     
+  
+  
+      console.log(data);
+    
+    }
+
+
+
+
+
+
+      
+      // function handleChange(e) {
+      //   const newData = { ...data };
+      //   newData[e.target.name] = e.target.value;
+      //   setData(newData);
+      // }
+      
+      // async function handleSubmit(e) {
+      //   e.preventDefault();
+      //   try {
+      //     const response = await fetch("https://sadamon.onrender.com/api/product/location", {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json"
+      //       },
+      //       body: JSON.stringify(data)
+      //     });
+      //     const result = await response.json();
+      //     console.log(result);
+      //     // window.location.href='/admin/location'
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // }
 
 // put location into option
 
@@ -192,8 +263,8 @@ const [data1, setData1] = useState({
                               <input
                                type="text"
                                id="subLocationName"
-                               onChange={handleChange}
-                               value={data1.subLocationName}
+                               onChange={(e) => handleChange(e)} 
+                              //  value={data1.subLocationName}
                                
                                 class="
                    form-control
@@ -224,8 +295,8 @@ const [data1, setData1] = useState({
                >Number input</label
              > */}
                                 <input
-                                id="ordering" 
-                                value={data1.ordering} 
+                                name="ordering" 
+                                // value={data1.ordering} 
                                 onChange={handleChange} 
                                  
                                 
@@ -260,7 +331,7 @@ const [data1, setData1] = useState({
              > */}
                                 <input
                                 id="link" 
-                                // value={data1.link} 
+                             
                                 onChange={(e) => handleChange(e)} 
                                   type="url"
                                   class="
@@ -292,7 +363,7 @@ const [data1, setData1] = useState({
                                 <div class="form-check">
                                   <input
                                   id="status" 
-                                  value={data1.status} 
+                                  // value={data1.status} 
                                   onChange={(e) => handleChange(e)}
                                   
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
@@ -309,10 +380,13 @@ const [data1, setData1] = useState({
                                 </div>
                                 <div class="form-check">
                                   <input
+                                     name="status" 
+                                    
+                                     onChange={(e) => handleChange(e)}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
-                                    name="flexRadioDefault"
-                                    id="flexRadioDefault2"
+                                    
+                                 
                                     checked
                                   />
                                   <label
@@ -389,7 +463,7 @@ const [data1, setData1] = useState({
                     <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
                       <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                         <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                          <form onSubmit={handleSubmit}>
+                          <form >
                             {/* <input type="search" id="locationId" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-haspopup="listbox" aria-owns="locationId_list" aria-autocomplete="list" aria-controls="locationId_list" aria-activedescendant="locationId_list_0" aria-required="true" readonly="" unselectable="on" value="" style="opacity: 0;" aria-expanded="false"/> */}
       
                             <div class="mb-3 xl:w-96">
@@ -405,7 +479,7 @@ const [data1, setData1] = useState({
                               <input
                                 type="text"
                                 name="locationName"
-                                onChange={(e) => handleChange(e)}
+                                onChange={(e) => onInputChange(e)}
                                 // value={data.locationName}
                                 class="
                    form-control
@@ -438,7 +512,7 @@ const [data1, setData1] = useState({
                                 <input
                                   type="number"
                                   name="ordering"
-                                  onChange={(e) => handleChange(e)}
+                                  onChange={(e) => onInputChange(e)}
                                   // value={data.ordering}
                                   class="
                  form-control
@@ -470,7 +544,7 @@ const [data1, setData1] = useState({
                                 
                                     // id="status"
                                     name="status"
-                                    onChange={(e) => handleChange(e)}
+                                    onChange={(e) => onInputChange(e)}
                                     // value={data.status}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
@@ -486,7 +560,7 @@ const [data1, setData1] = useState({
                                   <input
                                     // id="status"
                                     name="status"
-                                    onChange={(e) => handleChange(e)}
+                                    onChange={(e) => onInputChange(e)}
                                     // value={data.status}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
@@ -505,7 +579,7 @@ const [data1, setData1] = useState({
                             </div>
                           <button
                             type="submit"
-                            // onClick={submitForm}
+                            onClick={submitForm}
                             class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                           >
                             Save changes
