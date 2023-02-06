@@ -1,17 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../sidebar/Sidebar";
 import Navbar from "../../navbar/Navbar";
 import "./category.scss";
+import axios from "axios";
+import api from '../../../apiEndpoint/apiEndpoint'
 
 const Categories = () => {
+  // ADD + Button
+  const [inputValues, setInputValues] = useState([]);
+
+  const handleAddInput = () => {
+    const abc = ([...inputValues, []]);
+    setInputValues(abc)
+  };
+
+  const handleAddChange = (e, index) => {
+    const values = [...inputValues];
+    values[index] = e.target.value;
+    setInputValues(values);
+  };
+  console.log(inputValues)
+  
+
+
+
+
+
+
+
+
+
+
+  // Add Feature................
+  const [feature,setFeature]= useState()
+const onInputfeature = (e)=>{
+  setFeature({...feature, [e.target.name]:e.target.value});
+}
+
+const featureobj = ()=>{
+
+  let featureData = {}
+  featureData={
+    featureName: feature.featureName,
+    ordering:feature.ordering,
+    type:feature.type,
+    option:feature.option,
+    status:feature.status,
+  }
+  console.log(featureData)
+  addfeature(featureData)
+
+}
+
+const featureSubmit = (e)=>{
+  e.preventDefault()
+  featureobj()
+}
+
+
+async function addfeature(formdata){
+
+  const sendData = await axios.post(`${api.url}/admin/createfeature`,formdata,{withCredentials:true},{
+
+
+    body:JSON.stringify(formdata),
+  });
+
+  // const data =await sendData.json();
+  console.log(sendData);
+
+
+}
+function handleBothChanges(e) {
+  handleAddChange(e, );
+  onInputfeature(e);
+}
+
+
+  // const onInputChange
+
+
+
+
+
   return (
-    <div>
+    <div >
       <div className="list">
         <Sidebar />
         <div className="listContainer">
           <Navbar />
           <div>
             <div class=" flex flex-1 mx-2 mt-2 p-4">
+
               <button
                 type="button"
                 class="flex items-end px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
@@ -20,6 +100,7 @@ const Categories = () => {
               >
                 + Add Category
               </button>
+
 
               {/* NEW CATEGORY */}
               <div
@@ -32,6 +113,7 @@ const Categories = () => {
               >
                 <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
                   <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+                   <div class="flex"> 
                     <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                       <form method="post">
                         <div class="mb-3 xl:w-96">
@@ -264,17 +346,22 @@ const Categories = () => {
 
 
 
+{/* Table */}
 
-
-
-                    <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-                    <button type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter4">
+                    <div class="px-px bg-white mr-auto">
+                    <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t bg-white border-gray-200 rounded-b-md">
+                    <button type="button" class="  px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter4">
     Add Feature
-  </button>
+    </button>
                       <div class="flex flex-row ">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                           <div class="py-1 min-w-full sm:px-6 lg:px-4 ">
                             <div class="overflow-hidden">
+
+
+{/* Table */}
+
+
                               <table class="min-w-full">
                                 <thead class="bg-white border-b">
                                   <tr>
@@ -364,6 +451,8 @@ const Categories = () => {
                         </div>
                       </div>
                     </div>
+                    </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -389,7 +478,7 @@ const Categories = () => {
                             for="exampleFormControlInpu3"
                             class="form-label inline-block mb-2 text-gray-700"
                           >
-                            New Location
+                            New Category
                           </label>
 
                           {/* SubLocation */}
@@ -451,6 +540,14 @@ const Categories = () => {
                             />
                           </div>
                         </div>
+{/* Upload Image */}
+
+<div>
+    <input class="py-auto" type="file"  />
+    <button >Upload Image</button>
+  </div>
+
+
 
                         {/* Status */}
                         <div class="flex">
@@ -505,10 +602,10 @@ const Categories = () => {
 {/* Add Feature */}
 
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalCenter4" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
-<div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
-                  <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-                    <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                      <form>
+  <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
+    <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+      <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+      <form>
                         {/* <input type="search" id="locationId" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-haspopup="listbox" aria-owns="locationId_list" aria-autocomplete="list" aria-controls="locationId_list" aria-activedescendant="locationId_list_0" aria-required="true" readonly="" unselectable="on" value="" style="opacity: 0;" aria-expanded="false"/> */}
 
                         <div class="mb-3 xl:w-96">
@@ -519,11 +616,13 @@ const Categories = () => {
                             New Feature
                           </label>
 
-                          {/* SubLocation */}
+                          {/* Feature Name */}
 
                           <input
+                          
                             type="text"
-                            name="locationName"
+                            onChange={(e) => onInputfeature(e)} 
+                            name="featureName"
                             // value={data.locationName}
                             class="
                    form-control
@@ -554,6 +653,7 @@ const Categories = () => {
                >Number input</label
              > */}
                             <input
+                            onChange={(e) => onInputfeature(e)} 
                               type="number"
                               name="ordering"
                               // value={data.ordering}
@@ -582,7 +682,8 @@ const Categories = () => {
                         {/* Feature Type */}
                         <label>
                               <select
-                                name="locationId"
+                              onChange={(e) => onInputfeature(e)} 
+                                name="type"
                                 class="
                    form-control
                    block
@@ -609,15 +710,18 @@ const Categories = () => {
                                 placeholder="Category"
                               ></select>
                             </label>
+                            {/* ADD */}
+                            {/* <input type="button" class="addButtonTwo" value="+" onclick={addRow()} /> */}
 
                         {/* Status */}
                         <div class="flex">
                           <div>
                             <div class="form-check">
                               <input
-                                // id="status"
+                              onChange={(e) => onInputfeature(e)} 
+                                
                                 name="status"
-                                // value={data.status}
+                                
                                 class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="radio"
                                 checked
@@ -643,22 +747,74 @@ const Categories = () => {
                               >
                                 Inactive
                               </label>
+                    
+
+
+
+
+                    
                             </div>
                           </div>
                         </div>
-                        <button
-                          type="submit"
-                          class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                        >
-                          Save changes
-                        </button>
-                      </form>
-                    </div>
 
-                    <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md"></div>
-                  </div>
-                </div>
+ 
+                          <button
+                          onClick={featureSubmit}
+                            type="submit"
+                            class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                            >
+                            Save changes
+                          </button>
+                          </form>
+      </div>
+                            {/* Plus Add Button */}
+        <div>
+                          <button  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1" onClick={()=>handleAddInput()}>Add</button>
+                            {inputValues.map((inputValue, index) => {
+                              
+                                      return(
+                                        <div>
+                                        <input
+                                        name="option"
+                                        // onChange={(e) => onInputfeature(e)} 
+                                        class="
+                   form-control
+                   block
+                   w-full
+                   px-1
+                   py-1.5
+                   text-base
+                   font-normal
+                   text-gray-700
+                   bg-white bg-clip-padding
+                   border border-solid border-gray-300
+                   rounded
+                   transition
+                   ease-in-out
+                   m-0
+                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                 " placeholder="Feature Option" onChange={handleBothChanges} />
+                                        </div>
+                                      )
+                                      
+                                      
+                                      
+                                    })}
+     
+      
+
+    </div>
+    
+      <div
+        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+       
+      </div>
+      
+    </div>
+  </div>
 </div>
+
+
 
 
 

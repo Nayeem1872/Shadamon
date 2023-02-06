@@ -149,8 +149,8 @@ const [data1, setData1] = useState()
   
     
   
-    const data = await sendData.json();
-    console.log(data);
+    // const data1 = await sendData.json();
+    console.log(sendData);
 
   
   }

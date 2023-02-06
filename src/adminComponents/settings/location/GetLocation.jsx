@@ -68,6 +68,36 @@ const toggleDetails = name => {
   });
 };
 
+// Get Sub Location
+const [sub, setSub] = useState([]);
+
+
+useEffect (()=>{
+    
+  const getSubUser = async ()=>{ 
+    const reqData = await axios.get(`${api.url}/product/alllocations`,{withCredentials:true});
+    // const resData = await reqData.json()
+    setSub(reqData.data.data);
+    
+    
+    
+
+  }
+  if(firstCall===false){
+    setFirstcall(true)
+  }
+
+  console.log(sub)
+  
+    getSubUser()
+    
+    
+
+},[sub]);
+
+
+
+
   
   
   return (
@@ -96,6 +126,14 @@ const toggleDetails = name => {
               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                 Location
               </th>
+            {/* <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+          
+  <a  data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+  </a>
+ 
+
+</th> */}
               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                 Order
               </th>
@@ -110,6 +148,7 @@ const toggleDetails = name => {
               </th>
             </tr>
           </thead>
+       
           <tbody>
             {/* {locationss.map((users)=>console.log(users))} */}
             { locationss.map((user)=>(
@@ -135,32 +174,51 @@ const toggleDetails = name => {
     <Link to='/edit' class='btn btn-blue mx-2'> Edit</Link>
     <button onClick={() => handleDelete(user.location._id)}>Delete</button>
   </td>
+  <thead>
+  
+  
+
   {showDetails[user.location.locationName] && (
+
+    
   <tr>
     <td colSpan={5}>
       <table>
         <tbody>
           <tr>
             <td>Sublocation</td>
-            <td>{user.location.sublocation}</td>
+            <td>{user.sublocations.subLocationName}</td>
+          </tr>
+          <tr>
+            <td>URL</td>
+            <td>{user.sublocations.link}</td>
           </tr>
           <tr>
             <td>Ordering</td>
             <td>{user.location.ordering}</td>
           </tr>
           <tr>
-            <td>URL</td>
-            <td>{user.location.url}</td>
+            <td>Entry Date</td>
+            <td>{user.location.ordering}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>{user.location.ordering}</td>
           </tr>
         </tbody>
       </table>
     </td>
   </tr>
-)}
+  
+)} 
+     </thead>
+     
             </tr>
             
-             )) } 
+           )  ) } 
           </tbody>
+             
+          
         </table>
       </div>
     </div>
