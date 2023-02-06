@@ -7,6 +7,7 @@ import Getlocation from './GetLocation';
 import Test from './Test';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../../../apiEndpoint/apiEndpoint'
 
 
 
@@ -86,34 +87,6 @@ const Addlocation = () => {
 
 
 
-
-
-
-      
-      // function handleChange(e) {
-      //   const newData = { ...data };
-      //   newData[e.target.name] = e.target.value;
-      //   setData(newData);
-      // }
-      
-      // async function handleSubmit(e) {
-      //   e.preventDefault();
-      //   try {
-      //     const response = await fetch("https://sadamon.onrender.com/api/product/location", {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json"
-      //       },
-      //       body: JSON.stringify(data)
-      //     });
-      //     const result = await response.json();
-      //     console.log(result);
-      //     // window.location.href='/admin/location'
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // }
-
 // put location into option
 
 const [locationName,setLocations]= useState ([]);
@@ -135,41 +108,52 @@ useEffect(() => {
 
 // Add SubLocation
 
-const [data1, setData1] = useState({
-    locationId: "",
-    subLocationName: "",
-    link: "",
-    ordering: "",
-    status: "",
-  });
+const [data1, setData1] = useState()
   
-  function handleChange(e) {
-    const newData = { ...data1 };
-    newData[e.target.id] = e.target.value;
-    setData1(newData);
-  }
+  const onInputChange1 = (e) =>{
+
+    setData1({ ...data1, [e.target.name]: e.target.value });
+}
   
-  const handleSubmit1 = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("https://sadamon.onrender.com/api/product/postsublocation", data1, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      
-    //   console.log(response.sublocations.data);
-      console.log(response.data);
-    //   window.location.href='/admin/location'
-    } catch (error) {
-      console.error(error);
+  const finalobj1 = ()=>{
+    console.log();
+    let finalData1 ={}
+    finalData1 ={
+  locationId: data1.locationId,
+    subLocationName: data1.subLocationName,
+    link: data1.link,
+    ordering: data1.ordering,
+    status: data1.status,
     }
+    console.log(finalData1)
+  
+  addSubData (finalData1)
+  console.log(finalData1)
   }
 
 
+  const submitForm1 = (e)=>{
+    e.preventDefault()
+    finalobj1()
+  }
 
 
+  async function addSubData(formdata) {
+    // event.preventDefault();
 
+    const sendData = await axios.post(`${api.url}/product/postsublocation`, formdata,{withCredentials:true},{
+
+    body: JSON.stringify(formdata),
+
+    });
+  
+    
+  
+    const data = await sendData.json();
+    console.log(data);
+
+  
+  }
 
 
 
@@ -191,7 +175,7 @@ const [data1, setData1] = useState({
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModalCenter"
                   >
-                    + Add Location
+                    + Add Sub-Location
                   </button>
                   <div
                     class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -204,7 +188,7 @@ const [data1, setData1] = useState({
                     <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
                       <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                         <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                          <form method="post" onSubmit={handleSubmit1}>
+                          <form method="post" >
                       
       
                             <div class="mb-3 xl:w-96">
@@ -212,7 +196,7 @@ const [data1, setData1] = useState({
                                 for="exampleFormControlInpu3"
                                 class="form-label inline-block mb-2 text-gray-700"
                               >
-                                Add Location
+                                Add Sub-Location
                                 
                               </label>
                               {/* Location */}
@@ -220,7 +204,8 @@ const [data1, setData1] = useState({
                               <div className="flex">
                                 <label>
                                   <select
-                                
+                                   onChange={(e) => onInputChange1(e)} 
+                                name='locationId'
                                     class="
                    form-control
                    block
@@ -241,9 +226,9 @@ const [data1, setData1] = useState({
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                  "
                                   >
-                                     
+                                    
                      {locationName.map(location => (
-                         <option>{location.location.locationName}</option>
+                         <option value={location.location._id} >{location.location.locationName}</option>
                              ))}
                           </select>
                                 </label>
@@ -262,8 +247,8 @@ const [data1, setData1] = useState({
       
                               <input
                                type="text"
-                               id="subLocationName"
-                               onChange={(e) => handleChange(e)} 
+                               name="subLocationName"
+                               onChange={(e) => onInputChange1(e)} 
                               //  value={data1.subLocationName}
                                
                                 class="
@@ -297,7 +282,7 @@ const [data1, setData1] = useState({
                                 <input
                                 name="ordering" 
                                 // value={data1.ordering} 
-                                onChange={handleChange} 
+                                onChange={(e) => onInputChange1(e)} 
                                  
                                 
                                 type="number"
@@ -330,9 +315,9 @@ const [data1, setData1] = useState({
                >URL input</label
              > */}
                                 <input
-                                id="link" 
+                                name="link" 
                              
-                                onChange={(e) => handleChange(e)} 
+                                onChange={(e) => onInputChange1(e)} 
                                   type="url"
                                   class="
                  form-control
@@ -362,13 +347,13 @@ const [data1, setData1] = useState({
                               <div>
                                 <div class="form-check">
                                   <input
-                                  id="status" 
+                                  name="status" 
                                   // value={data1.status} 
-                                  onChange={(e) => handleChange(e)}
-                                  
+                                  onChange={(e) => onInputChange1(e)} 
+                                  value="active"
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
-                                    name="flexRadioDefault"
+                                    
                                     
                                   />
                                   <label
@@ -381,13 +366,12 @@ const [data1, setData1] = useState({
                                 <div class="form-check">
                                   <input
                                      name="status" 
-                                    
-                                     onChange={(e) => handleChange(e)}
+                                      value="inactive"
+                                     onChange={(e) => onInputChange1(e)} 
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
                                     
                                  
-                                    checked
                                   />
                                   <label
                                     class="form-check-label inline-block text-gray-800"
@@ -401,6 +385,7 @@ const [data1, setData1] = useState({
                         <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
                           <button
                             type="submit"
+                            onClick={submitForm1}
                             class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                             >
                             Save changes
@@ -548,7 +533,7 @@ const [data1, setData1] = useState({
                                     // value={data.status}
                                     class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                     type="radio"
-                                    
+                                  
                                     checked
                                   />
                                   <label
