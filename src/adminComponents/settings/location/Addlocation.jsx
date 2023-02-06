@@ -125,7 +125,7 @@ const [data1, setData1] = useState()
     ordering: data1.ordering,
     status: data1.status,
     }
-    console.log(finalData1)
+    // console.log(finalData1)
   
   addSubData (finalData1)
   console.log(finalData1)

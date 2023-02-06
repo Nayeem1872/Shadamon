@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../sidebar/Sidebar";
 import Navbar from "../../navbar/Navbar";
 import "./category.scss";
@@ -19,19 +19,14 @@ const Categories = () => {
     values[index] = e.target.value;
     setInputValues(values);
   };
-  console.log(inputValues)
+  // console.log(inputValues)
   
 
 
 
 
 
-
-
-
-
-
-  // Add Feature................
+ // Add Feature................
   const [feature,setFeature]= useState()
 const onInputfeature = (e)=>{
   setFeature({...feature, [e.target.name]:e.target.value});
@@ -71,13 +66,101 @@ async function addfeature(formdata){
 
 
 }
+
+// put feature Type into option
+
+
+const [type,setType]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/admin/allfeatures`,{withCredentials:true});
+        setType(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+console.log(type)
+
+
+
+},[])
+
+
+
+
+
+
+// double handle
 function handleBothChanges(e) {
   handleAddChange(e, );
   onInputfeature(e);
 }
 
 
-  // const onInputChange
+  // ADD CATEGORY
+
+
+  const [cat, setCat] = useState()
+
+  const onInputCatChange = (e)=>{
+    setCat({...cat, [e.target.name]: e.target.value })
+  }
+
+
+  const catobj = ()=>{
+    let catData = {}
+    catData= {
+      parentId:cat.parentId,
+      categoryName:cat.categoryName,
+      categoryOrder:cat.categoryOrder,
+      categoryImg:cat.categoryImg,
+      buttons:cat.buttons
+}
+    
+    addCatData (catData)
+    
+    console.log(catData)
+
+  }
+
+
+  const submitCatForm = (e)=>{
+    e.preventDefault()
+
+    catobj()
+
+  }
+
+
+  async function addCatData (formdata){
+
+    const sendData = await axios.post(`${api.url}/admin/addcategory`,formdata,{withCredentials:true},{
+      
+      body:JSON.stringify(formdata),
+
+    });
+
+    console.log(sendData);
+
+
+  }
+
+
+
+
+
+
+
+
 
 
 
@@ -480,12 +563,47 @@ function handleBothChanges(e) {
                           >
                             New Category
                           </label>
+                          {/* Parent Category */}
+                          <label>
+                              <select
+                              onChange={(e) => onInputCatChange(e)} 
+                                name="parentId"
+                                class="
+                   form-control
+                   block
+                   w-full
+                   px-3
+                   py-1.5
+                   mb-4
+                   pl-12
+                   text-base
+                   font-normal
+                   text-gray-700
+                   bg-white bg-clip-padding
+                   border border-solid border-gray-300
+                   rounded
+                   transition
+                   ease-in-out
+                   m-0
+                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                
+                  
+                
+                
+                   "
+                                placeholder="Category"
+                              ></select>
+                            </label>
 
-                          {/* SubLocation */}
+
+
+
+                          {/* Category Name */}
 
                           <input
+                            onChange={(e) => onInputCatChange(e)} 
                             type="text"
-                            name="locationName"
+                            name="categoryName"
                             // value={data.locationName}
                             class="
                    form-control
@@ -504,10 +622,40 @@ function handleBothChanges(e) {
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                  "
-                            placeholder="Location Name"
+                            placeholder="Category Name"
                           />
                         </div>
-                        {/* Date */}
+                        {/* Button Type */}
+                        <label>
+                              <select
+                                onChange={(e) => onInputCatChange(e)}  
+                                name="buttons"
+                                class="
+                   form-control
+                   block
+                   w-full
+                   px-3
+                   py-1.5
+                   mb-4
+                   pl-12
+                   text-base
+                   font-normal
+                   text-gray-700
+                   bg-white bg-clip-padding
+                   border border-solid border-gray-300
+                   rounded
+                   transition
+                   ease-in-out
+                   m-0
+                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                
+                  
+                
+                
+                   "
+                                placeholder="Button Type"
+                              ></select>
+                            </label>
 
                         {/* Number */}
                         <div class="flex justify-center">
@@ -516,8 +664,9 @@ function handleBothChanges(e) {
                >Number input</label
              > */}
                             <input
+                              onChange={(e) => onInputCatChange(e)} 
                               type="number"
-                              name="ordering"
+                              name="categoryOrder"
                               // value={data.ordering}
                               class="
                  form-control
@@ -543,7 +692,11 @@ function handleBothChanges(e) {
 {/* Upload Image */}
 
 <div>
-    <input class="py-auto" type="file"  />
+    <input
+      onChange={(e) => onInputCatChange(e)} 
+      name="categoryImg"
+    
+    class="py-auto" type="file"  />
     <button >Upload Image</button>
   </div>
 
@@ -587,9 +740,10 @@ function handleBothChanges(e) {
                         </div>
                         <button
                           type="submit"
+                          onClick={submitCatForm}
                           class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                         >
-                          Save changes
+                          ADD
                         </button>
                       </form>
                     </div>
@@ -702,13 +856,21 @@ function handleBothChanges(e) {
                    ease-in-out
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                
-                  
-                
-                
-                   "
-                                placeholder="Category"
-                              ></select>
+              
+                   "   placeholder="Category">
+                          
+                          
+                          {type.map(type=>(
+
+                            <option value="{type._id}">{type.featureType}</option>
+
+
+                          ))}
+
+
+
+
+              </select>
                             </label>
                             {/* ADD */}
                             {/* <input type="button" class="addButtonTwo" value="+" onclick={addRow()} /> */}
