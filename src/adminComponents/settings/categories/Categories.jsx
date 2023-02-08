@@ -7,23 +7,26 @@ import api from '../../../apiEndpoint/apiEndpoint'
 
 const Categories = () => {
   // ADD + Button
-  const [inputValues, setInputValues] = useState([]);
+  const [inputValues, setInputValues] = useState([{add:''}]);
 
-  const handleAddInput = () => {
-    const abc = ([...inputValues, []]);
-    setInputValues(abc)
-  };
+  // const handleAddInput = (e, index) => {
+    // const values = [...inputValues];
+    // values[index] = e.target.value; 
+    // setInputValues(values);
+    // console.log(inputValues)
+    // const{}
 
-  const handleAddChange = (e, index) => {
-    const values = [...inputValues];
-    values[index] = e.target.value;
-    setInputValues(values);
-  };
-  // console.log(inputValues)
+
+  // };
   
+  // const handleAddClick = () => {
+  //   const abc = ([...inputValues, {add:''}]);
+  //   setInputValues(abc)
+  // };
+// const handleremove = ()=>{
 
 
-
+// }
 
 
  // Add Feature................
@@ -38,12 +41,12 @@ const featureobj = ()=>{
   featureData={
     featureName: feature.featureName,
     ordering:feature.ordering,
-    type:feature.type,
-    option:feature.option,
+    featureType:feature.featureType,
+    options:feature.option,
     status:feature.status,
   }
   console.log(featureData)
-  addfeature(featureData)
+  // addfeature(featureData)
 
 }
 
@@ -53,21 +56,21 @@ const featureSubmit = (e)=>{
 }
 
 
-async function addfeature(formdata){
+// async function addfeature(formdata){
 
-  const sendData = await axios.post(`${api.url}/admin/createfeature`,formdata,{withCredentials:true},{
-
-
-    body:JSON.stringify(formdata),
-  });
-
-  // const data =await sendData.json();
-  console.log(sendData);
+//   const sendData = await axios.post(`${api.url}/admin/createfeature`,formdata,{withCredentials:true},{
 
 
-}
+//     body:JSON.stringify(formdata),
+//   });
 
-// put feature Type into option
+//   // const data =await sendData.json();
+//   console.log(sendData);
+
+
+// }
+
+// put feature Type and name into option
 
 
 const [type,setType]= useState ([]);
@@ -88,7 +91,108 @@ const getUser = async()=>{
 
 };
 getUser()
-console.log(type)
+// console.log(type)
+
+
+
+},[])
+
+// Get Category Name into Options
+const [catName,setCatName]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/admin/getallcategory`,{withCredentials:true});
+        setCatName(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+// console.log(type)
+
+
+
+},[])
+// parent Category into options
+const [parent,setParent]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/admin/allparentcat`,{withCredentials:true});
+        setParent(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+// console.log(type)
+
+
+
+},[])
+// get button type
+const [button,setButton]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/product/buttons`,{withCredentials:true});
+        setButton(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+// console.log(type)
+
+
+
+},[])
+
+
+//get all feature
+
+
+const [allFeature,setAllFeature]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/admin/allfeatures`,{withCredentials:true});
+        setAllFeature(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+console.log(allFeature)
 
 
 
@@ -99,10 +203,12 @@ console.log(type)
 
 
 
+
 // double handle
-function handleBothChanges(e) {
-  handleAddChange(e, );
+function handleBothChanges(e,index) {
+  // handleAddClick(e, index );
   onInputfeature(e);
+  console.log(index)
 }
 
 
@@ -157,11 +263,48 @@ function handleBothChanges(e) {
 
 
 
+  // ADD SUB CATEGORY
+  const [subCat,setSubCat]= useState()
+const onInputsubcat = (e)=>{
+  setFeature({...feature, [e.target.name]:e.target.value});
+}
+
+const subcatobj = ()=>{
+
+  let subcatData = {}
+  subcatData={
+   categoryId:subCat.categoryId,
+   subCategoryName:subCat.subCategoryName,
+    freePost:subCat.freePost,
+    status:subCat.status,
+    ordering:subCat.ordering,
+    features:subCat.features
+
+  }
+  console.log(subcatData)
+  setSubCat(subcatData)
+
+}
+
+const subcatSubmit = (e)=>{
+  e.preventDefault()
+  subcatobj()
+}
 
 
+async function subcat(formdata){
+
+  const sendData = await axios.post(`${api.url}/admin/addsubcategory`,formdata,{withCredentials:true},{
 
 
+    body:JSON.stringify(formdata),
+  });
 
+  // const data =await sendData.json();
+  console.log(sendData);
+
+
+}
 
 
 
@@ -204,14 +347,15 @@ function handleBothChanges(e) {
                             for="exampleFormControlInpu3"
                             class="form-label inline-block mb-2 text-gray-700"
                           >
-                            New Category
+                            New Sub Category
                           </label>
                           {/* Category */}
 
                           <div className="flex">
                             <label>
                               <select
-                                name="locationId"
+                              onChange={(e) => onInputsubcat(e)} 
+                                name="categoryId"
                                 class="
                    form-control
                    block
@@ -230,13 +374,19 @@ function handleBothChanges(e) {
                    ease-in-out
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                
-                  
-                
-                
-                   "
-                                placeholder="Category"
-                              ></select>
+               
+                   " >
+                    {catName.map(catname=>(
+
+                      <option value={catname._id}>{catname.categoryName}</option>
+
+
+                    ))}
+
+
+
+
+                   </select>
                             </label>
 
                             <button
@@ -256,6 +406,7 @@ function handleBothChanges(e) {
                >Number input</label
              > */}
                               <input
+                              onChange={(e) => onInputsubcat(e)} 
                                 name="ordering"
                                 // value={data1.ordering}
 
@@ -285,7 +436,11 @@ function handleBothChanges(e) {
                           {/* feature */}
                           <label>
                             <select
-                              name="feature"
+
+                            onChange={(e) => onInputsubcat(e)} 
+
+
+                              name="features"
                               class="
                    form-control
                    block
@@ -308,20 +463,26 @@ function handleBothChanges(e) {
                   
                 
                 
-                   "
-                              placeholder="Category"
-                            ></select>
+                   ">
+                    {type.map(name=>(
+                      <option value={name._id}>{name.featureName}</option>
+
+
+                   ) )}
+
+
+
+                   </select>
                           </label>
 
                           {/* Free Post */}
                           <div class="flex justify-center">
                             <div class="mb-3 xl:w-96">
-                              {/* <label for="exampleNumber0" class="form-label inline-block mb-2 text-gray-700"
-               >Number input</label
-             > */}
+                              
                               <input
-                                name="ordering"
-                                // value={data1.ordering}
+                              onChange={(e) => onInputsubcat(e)} 
+                                name="freePost"
+                                
 
                                 type="number"
                                 class="
@@ -349,8 +510,9 @@ function handleBothChanges(e) {
                           {/* SubCategory Name */}
 
                           <input
+                          onChange={(e) => onInputsubcat(e)} 
                             type=""
-                            name=""
+                            name="subCategoryName"
                             //  value={data1.subLocationName}
 
                             class="
@@ -379,10 +541,11 @@ function handleBothChanges(e) {
                           <div>
                             <div class="form-check">
                               <input
+                              onChange={(e) => onInputsubcat(e)} 
                                 name="status"
                                 // value={data1.status}
 
-                                value="active"
+                                value="true"
                                 class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="radio"
                               />
@@ -395,8 +558,9 @@ function handleBothChanges(e) {
                             </div>
                             <div class="form-check">
                               <input
+                              onChange={(e) => onInputsubcat(e)} 
                                 name="status"
-                                value="inactive"
+                                value="false"
                                 class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="radio"
                               />
@@ -412,17 +576,13 @@ function handleBothChanges(e) {
                         <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
                           <button
                             type="submit"
+                            onClick={subcatSubmit}
                             class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                           >
                             Save changes
                           </button>
-                          <button
-                            type="button"
-                            class="inline-block px-6 mx-auto py-2.5 bg-purple-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
+                          
+                       
                         </div>
                       </form>
                     </div>
@@ -448,6 +608,7 @@ function handleBothChanges(e) {
                               <table class="min-w-full">
                                 <thead class="bg-white border-b">
                                   <tr>
+                                    
                                     <th
                                       scope="col"
                                       class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
@@ -481,52 +642,28 @@ function handleBothChanges(e) {
                                   </tr>
                                 </thead>
                                 <tbody>
+                                  {allFeature.map(feature=>(
                                   <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                      1
+
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" >
+                                      {feature.featureName}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Mark
+                                    {feature.featureOrdering}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Otto
+                                    {feature.featureType}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      @mdo
+                                    {feature.status}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                       {/* <button>Edit/ </button> */}
                                       <button class="">Delete</button>
                                     </td>
                                   </tr>
-                                  <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                      2
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Jacob
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Thornton
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      @fat
-                                    </td>
-                                  </tr>
-                                  <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                      3
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Larry
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      Wild
-                                    </td>
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                      @twitter
-                                    </td>
-                                  </tr>
+                                  ))}
+                                  
                                 </tbody>
                               </table>
                             </div>
@@ -591,8 +728,19 @@ function handleBothChanges(e) {
                 
                 
                    "
-                                placeholder="Category"
-                              ></select>
+                              >
+
+                            {parent.map(name=>(
+
+                              <option value={name._id}>{name.name}</option>
+
+
+                            ))}
+
+
+
+
+                              </select>
                             </label>
 
 
@@ -648,13 +796,19 @@ function handleBothChanges(e) {
                    ease-in-out
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                
-                  
-                
-                
+               
                    "
-                                placeholder="Button Type"
-                              ></select>
+                             
+                              >
+
+                              {button.map(type=>(
+
+                                <option value={type._id}>{type.buttonName}</option>
+
+                              ))}
+
+
+                              </select>
                             </label>
 
                         {/* Number */}
@@ -745,10 +899,13 @@ function handleBothChanges(e) {
                         >
                           ADD
                         </button>
+                        <button type="button" class=" ml-6 px-6 py-2.5 bg-orange-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-orange-700 hover:shadow-lg focus:bg-orange-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+    Back
+  </button>
                       </form>
                     </div>
 
-                    <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md"></div>
+                    {/* <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md"></div> */}
                   </div>
                 </div>
               </div>
@@ -837,7 +994,7 @@ function handleBothChanges(e) {
                         <label>
                               <select
                               onChange={(e) => onInputfeature(e)} 
-                                name="type"
+                                name="featureType"
                                 class="
                    form-control
                    block
@@ -920,22 +1077,17 @@ function handleBothChanges(e) {
                         </div>
 
  
-                          <button
-                          onClick={featureSubmit}
-                            type="submit"
-                            class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                            >
-                            Save changes
-                          </button>
+               
                           </form>
       </div>
-                            {/* Plus Add Button */}
+                            
         <div>
-                          <button  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1" onClick={()=>handleAddInput()}>Add</button>
-                            {inputValues.map((inputValue, index) => {
+                            
                               
-                                      return(
-                                        <div>
+                              
+                                <div 
+                                  // key={index}
+                                  >
                                         <input
                                         name="option"
                                         // onChange={(e) => onInputfeature(e)} 
@@ -955,22 +1107,58 @@ function handleBothChanges(e) {
                    ease-in-out
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                 " placeholder="Feature Option" onChange={handleBothChanges} />
+                 " placeholder="Feature Option"
+                //  value={inputValue.options.optionName}
+                  // onChange={e=>handleAddInput(e,index)} 
+                  
+                  />
+                                   
+                                   
+                                   
+                                      
                                         </div>
-                                      )
+                                     
+
                                       
+                                
+                            <button  class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                            //  onClick={()=>handleremove}
+                            
+                            >Remove</button>
+
+                                
+                                    
+                                      <button  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                                       
-                                      
-                                    })}
+                                       
+                                       >Add</button>
+
+                                
+
      
       
 
     </div>
+                                  
+    <div class="">
+    <button
+                          onClick={featureSubmit}
+                            type="submit"
+                            class=" mt-5 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                            >
+                            Save 
+                          </button>
+                          <button type="button" class=" ml-6 px-6 py-2.5 bg-orange-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-orange-700 hover:shadow-lg focus:bg-orange-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+    Back
+  </button>
+  </div>
+                            {/* Plus Add Button */}
     
       <div
         class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
        
       </div>
+      
       
     </div>
   </div>

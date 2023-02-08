@@ -14,26 +14,26 @@ const Getlocation = () => {
   
   
   
-  useEffect (()=>{
+  // useEffect (()=>{
     
-    const getUser = async ()=>{ 
-      const reqData = await axios.get("https://sadamon.onrender.com/api/product/alllocations",{withCredentials:true});
-      // const resData = await reqData.json()
-      setLocations(reqData.data.data);
+  //   const getUser = async ()=>{ 
+  //     const reqData = await axios.get("https://sadamon.onrender.com/api/product/alllocations",{withCredentials:true});
+  //     // const resData = await reqData.json()
+  //     setLocations(reqData.data.data);
       
       
       
   
-    }
-    if(firstCall===false){
-      setFirstcall(true)
-    }
+  //   }
+  //   if(firstCall===false){
+  //     setFirstcall(true)
+  //   }
     
-      getUser()
+  //     getUser()
       
       
 
-  },[locationss]);
+  // },[locationss]);
 
 
   // delete fuction
@@ -71,30 +71,27 @@ const toggleDetails = name => {
 // Get Sub Location
 const [sub, setSub] = useState([]);
 
-
-useEffect (()=>{
-    
-  const getSubUser = async ()=>{ 
-    const reqData = await axios.get(`${api.url}/product/alllocations`,{withCredentials:true});
-    // const resData = await reqData.json()
-    setSub(reqData.data.data);
-    
-    
-    
-
-  }
-  if(firstCall===false){
-    setFirstcall(true)
-  }
-
+useEffect(()=>{
+  const getUser = async()=>{
+        try{
+          const reqData = await axios.get(`${api.url}/product/alllocations`,{withCredentials:true});
+          setSub(reqData.data.data);
+  
+  
+  
+        }catch(error){
+  
+          console.log(error);
+  
+        }
+  
+  };
+  getUser()
   console.log(sub)
   
-    getSubUser()
-    
-    
-
-},[sub]);
-
+  
+  
+  },[])
 
 
 
@@ -151,7 +148,7 @@ useEffect (()=>{
        
           <tbody>
             {/* {locationss.map((users)=>console.log(users))} */}
-            { locationss.map((user)=>(
+            { sub.map((user)=>(
 
 
 
@@ -172,7 +169,7 @@ useEffect (()=>{
   </td>
   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
     <Link to='/edit' class='btn btn-blue mx-2'> Edit</Link>
-    <button onClick={() => handleDelete(user.location._id)}>Delete</button>
+    <button class="bg-red-600" onClick={() => handleDelete(user.location._id)}>Delete</button>
   </td>
   <thead>
   
@@ -181,29 +178,30 @@ useEffect (()=>{
   {showDetails[user.location.locationName] && (
 
     
+  
   <tr>
     <td colSpan={5}>
       <table>
         <tbody>
           <tr>
-            <td>Sublocation</td>
-            <td>{user.sublocations.subLocationName}</td>
+            <th>Sublocation:</th>
+            <td  >{user.sublocations.subLocationName}</td>
           </tr>
           <tr>
-            <td>URL</td>
+            <th>URL:</th>
             <td>{user.sublocations.link}</td>
           </tr>
           <tr>
             <td>Ordering</td>
-            <td>{user.location.ordering}</td>
+            <td>{user.sublocations.ordering}</td>
           </tr>
           <tr>
             <td>Entry Date</td>
-            <td>{user.location.ordering}</td>
+            <td>{user.sublocations.createdAt}</td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>{user.location.ordering}</td>
+            <td>{user.sublocations.status}</td>
           </tr>
         </tbody>
       </table>

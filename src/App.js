@@ -7,6 +7,7 @@ import Admin from "./Admin"
 import Categories from "./adminComponents/settings/categories/Categories";
 import Location from "./adminComponents/settings/location/Addlocation";
 import GetLocation from "./adminComponents/settings/location/GetLocation";
+import Package from "./adminComponents/settings/package/Package";
 
 
 
@@ -26,6 +27,7 @@ function App() {
              <Route path="/admin/categories" element={< Categories />}/>
              <Route path="/admin/location" element={< Location />}/>
              <Route path="/admin/location" element={< GetLocation />}/>
+             <Route path="/admin/package" element={< Package />}/>
               
               {/* <Route path="/admin/new" element={<New/>}/>
               <Route path="/admin/categories" >
