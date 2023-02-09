@@ -7,7 +7,34 @@ import api from '../../../apiEndpoint/apiEndpoint'
 
 const Categories = () => {
   // ADD + Button
-  const [inputValues, setInputValues] = useState([{add:''}]);
+  const [inputFields,setInputFields] = useState([
+    {optionName:''}
+
+  ]);
+  const handleChangeInput =(index,e)=>{
+
+    console.log(e.target.name,index)
+    const values =[...inputFields];
+   values[index][e.target.name]= e.target.value
+    setInputFields(values);
+  }
+  const handleAddFields = ()=>{
+    
+    setInputFields([...inputFields,{optionName:''}])
+    console.log("InputFields", inputFields)
+
+ }
+ const handleRemove = (i)=>{
+  const values = [...inputFields];
+  values.splice(i,1);
+  setInputFields(values)
+
+}
+// const handleSubmit = (e)=>{
+//   e.preventDefault()
+//   console.log("InputFields", inputFields)
+
+// }
 
   // const handleAddInput = (e, index) => {
     // const values = [...inputValues];
@@ -42,11 +69,11 @@ const featureobj = ()=>{
     featureName: feature.featureName,
     ordering:feature.ordering,
     featureType:feature.featureType,
-    options:feature.option,
+    options:feature.options,
     status:feature.status,
   }
   console.log(featureData)
-  // addfeature(featureData)
+  addfeature(featureData)
 
 }
 
@@ -56,19 +83,19 @@ const featureSubmit = (e)=>{
 }
 
 
-// async function addfeature(formdata){
+async function addfeature(formdata){
 
-//   const sendData = await axios.post(`${api.url}/admin/createfeature`,formdata,{withCredentials:true},{
-
-
-//     body:JSON.stringify(formdata),
-//   });
-
-//   // const data =await sendData.json();
-//   console.log(sendData);
+  const sendData = await axios.post(`${api.url}/admin/createfeature`,formdata,{withCredentials:true},{
 
 
-// }
+    body:JSON.stringify(formdata),
+  });
+
+  // const data =await sendData.json();
+  console.log(sendData);
+
+
+}
 
 // put feature Type and name into option
 
@@ -208,7 +235,16 @@ console.log(allFeature)
 function handleBothChanges(e,index) {
   // handleAddClick(e, index );
   onInputfeature(e);
-  console.log(index)
+  handleChangeInput(index,e)
+  console.log()
+}
+
+// SAVE + ADD OPTION
+function handleBothSubmit (){
+  featureSubmit()
+  // handleSubmit()
+
+
 }
 
 
@@ -233,7 +269,7 @@ function handleBothChanges(e,index) {
 }
     
     addCatData (catData)
-    
+    handleImg(catData)
     console.log(catData)
 
   }
@@ -241,6 +277,9 @@ function handleBothChanges(e,index) {
 
   const submitCatForm = (e)=>{
     e.preventDefault()
+    const formData = new FormData()
+    formData.append("image",cat)
+
 
     catobj()
 
@@ -260,6 +299,23 @@ function handleBothChanges(e,index) {
 
   }
 
+
+  // image
+
+
+  const [img,setImg]=useState("")
+  const handleImg = (e)=>{
+    console.log(e.target.files)
+    setImg(e.target.files[0])
+    console.log(img)
+  }
+
+  // function imgAndPost (e){
+  //   onInputCatChange(e)
+  //   handleImg()
+
+
+  // }
 
 
 
@@ -282,7 +338,7 @@ const subcatobj = ()=>{
 
   }
   console.log(subcatData)
-  setSubCat(subcatData)
+  subcat(subcatData)
 
 }
 
@@ -847,11 +903,12 @@ async function subcat(formdata){
 
 <div>
     <input
-      onChange={(e) => onInputCatChange(e)} 
+      // onChange={(e) => onInputCatChange(e)} 
+      onChange={handleImg}
       name="categoryImg"
-    
+    accept="image/"
     class="py-auto" type="file"  />
-    <button >Upload Image</button>
+    {/* <button >Upload Image</button> */}
   </div>
 
 
@@ -1019,7 +1076,7 @@ async function subcat(formdata){
                           
                           {type.map(type=>(
 
-                            <option value="{type._id}">{type.featureType}</option>
+                            <option value={type._id}>{type.featureType}</option>
 
 
                           ))}
@@ -1043,6 +1100,7 @@ async function subcat(formdata){
                                 
                                 class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="radio"
+                                value="active"
                                 checked
                               />
                               <label
@@ -1057,6 +1115,7 @@ async function subcat(formdata){
                                 // value={data.status}
                                 class="flex form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="radio"
+                                value="inactive"
                                 // id="flexRadioDefault2"
                                 checked
                               />
@@ -1083,14 +1142,14 @@ async function subcat(formdata){
                             
         <div>
                             
-                              
+        {inputFields.map((input,index)=>(               
                               
                                 <div 
                                   // key={index}
                                   >
                                         <input
-                                        name="option"
-                                        // onChange={(e) => onInputfeature(e)} 
+                                        name="optionName"
+                                       value={input.optionName}
                                         class="
                    form-control
                    block
@@ -1108,6 +1167,8 @@ async function subcat(formdata){
                    m-0
                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                  " placeholder="Feature Option"
+                 type="text"
+                 onChange={e=>handleBothChanges(index,e)}
                 //  value={inputValue.options.optionName}
                   // onChange={e=>handleAddInput(e,index)} 
                   
@@ -1116,25 +1177,23 @@ async function subcat(formdata){
                                    
                                    
                                       
+           <button  class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1" onClick={()=>handleRemove(index)} type='submit'
+                >Remove</button>
+       
+                                       
+                                           
+      <button  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1" type="submit" onClick={()=>handleAddFields()}
+                                             
+                                              
+                                              >Add</button>
                                         </div>
                                      
 
                                       
                                 
-                            <button  class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                            //  onClick={()=>handleremove}
-                            
-                            >Remove</button>
 
                                 
-                                    
-                                      <button  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                                      
-                                       
-                                       >Add</button>
-
-                                
-
+        ))}
      
       
 

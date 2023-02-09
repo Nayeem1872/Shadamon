@@ -90,6 +90,62 @@ const handleCuSubmit = (e)=>{
 
 }
 
+// Coupon ADD
+const [coupon,setCoupon] = useState([
+  {totalPost:'', code:'', inTime:'', disAmount:'', validDays:''}
+
+]);
+const handleCouponChangeInput =(index,e)=>{
+
+  console.log(e.target.name,index)
+  const values =[...coupon];
+ values[index][e.target.name]= e.target.value
+  setCoupon(values);
+}
+const handleAddCoupon = ()=>{
+
+  setCoupon([...coupon,{totalPost:'', code:'', inTime:'', disAmount:'', validDays:''}])
+
+}
+const handleRemoveCoupon = (i)=>{
+  const values = [...coupon];
+  values.splice(i,1);
+  setCoupon(values)
+
+}
+const handleCouponSubmit = (e)=>{
+  e.preventDefault()
+  console.log("InputFields", coupon)
+
+}
+// VAT ADD
+const [vat,setVat] = useState([
+  {vatPer:'', status:''}
+
+]);
+const handleVatChangeInput =(index,e)=>{
+
+  console.log(e.target.name,index)
+  const values =[...vat];
+ values[index][e.target.name]= e.target.value
+  setVat(values);
+}
+const handleAddVat = ()=>{
+
+  setVat([...vat,{vatPer:'', status:''}])
+
+}
+const handleRemoveVat = (i)=>{
+  const values = [...vat];
+  values.splice(i,1);
+  setVat(values)
+
+}
+const handleVatSubmit = (e)=>{
+  e.preventDefault()
+  console.log("InputFields", vat)
+
+}
 
 
 
@@ -938,7 +994,7 @@ const handleCuSubmit = (e)=>{
 
   {/* Sorts */}
   <div class="tab-pane fade" id="tabs-messages3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
-  <button type="button" class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddFields()}>
+  <button type="button" class="inline-block px-6 py-2.5  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddFields()}>
     + Add New
   </button>
     <div class="">
@@ -1020,13 +1076,13 @@ const handleCuSubmit = (e)=>{
 {/* Coupon */}
 
   <div class="tab-pane fade" id="tabs-messages4" role="tabpanel" aria-labelledby="tabs-profile-tab4">
-  <button type="button" class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddFields()}>
+  <button type="button" class="inline-block px-6 py-2.5 ml-4  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddCoupon()}>
     + Add New
   </button>
     <div class="">
-    <form class="" onSubmit={handleSubmit}>
-      {inputFields.map((input,index)=>(
-        <div class="flex gap-3"  key={index}>
+    <form class="" onSubmit={handleCouponSubmit}>
+      {coupon.map((input,index)=>(
+        <div class="flex gap-3 mt-3 mb-3 ml-4"  key={index}>
 
           <input class="
         
@@ -1044,7 +1100,7 @@ const handleCuSubmit = (e)=>{
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="text" onChange={e=>handleChangeInput(index,e)} />
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='totalPost' placeholder='Total Post' value={input.totalPost} type="number" onChange={e=>handleCouponChangeInput(index,e)} />
             <input class=" form-control
                  
                  w-60
@@ -1059,7 +1115,7 @@ const handleCuSubmit = (e)=>{
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Sort' lable="Sort" value={input.Sort} type="text" onChange={e=>handleChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='code' placeholder='Coupon Code' value={input.code} type="text" onChange={e=>handleCouponChangeInput(index,e)}/>
               <input class=" form-control
                  
                  w-60
@@ -1074,11 +1130,41 @@ const handleCuSubmit = (e)=>{
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" value={input.perDay} type="number" onChange={e=>handleChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='inTime' placeholder='In Time' value={input.inTime} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
+              <input class=" form-control
+                 
+                 w-60
+                 px-3
+                 py-1.5
+                 text-base
+                 font-normal
+                 text-gray-700
+                 bg-white bg-clip-padding
+                 border border-solid border-gray-300
+                 rounded
+                 transition
+                 ease-in-out
+                 m-0
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='disAmount' placeholder='Dicount Amount' value={input.disAmount} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
+              <input class=" form-control
+                 
+                 w-60
+                 px-3
+                 py-1.5
+                 text-base
+                 font-normal
+                 text-gray-700
+                 bg-white bg-clip-padding
+                 border border-solid border-gray-300
+                 rounded
+                 transition
+                 ease-in-out
+                 m-0
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='validDays' placeholder='Valid Days' value={input.validDays} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
 
 
-                 <button onClick={handleSubmit} type='submit'>Save</button>
-                 <button onClick={()=>handleRemove(index)} type='submit'>Remove</button>
+                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={handleCouponSubmit} type='submit'>Save</button>
+                 <button class="inline-block px-6 py-2.5  bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleRemoveCoupon(index)} type='submit'>Remove</button>
 
 
 
@@ -1101,7 +1187,72 @@ const handleCuSubmit = (e)=>{
 
 {/* Vat */}
   <div class="tab-pane fade" id="tabs-messages5" role="tabpanel" aria-labelledby="tabs-profile-tab5">
-    Tab 5 content button version
+  <button type="button" class="inline-block px-6 py-2.5 ml-4  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddVat()}>
+    + Add New
+  </button>
+    <div class="">
+    <form class="" onSubmit={handleVatSubmit}>
+      {vat.map((input,index)=>(
+        <div class="flex gap-3 mt-3 mb-3 ml-4"  key={index}>
+
+          <input class="
+        
+          form-control
+                 
+                 w-60
+                 px-3
+                 py-1.5
+                 text-base
+                 font-normal
+                 text-gray-700
+                 bg-white bg-clip-padding
+                 border border-solid border-gray-300
+                 rounded
+                 transition
+                 ease-in-out
+                 m-0
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='vatPer' placeholder='Vat Percentage' value={input.vatPer} type="number" onChange={e=>handleVatChangeInput(index,e)} />
+            <select class=" form-control
+                 
+                 w-60
+                 px-3
+                 py-1.5
+                 text-base
+                 font-normal
+                 text-gray-700
+                 bg-white bg-clip-padding
+                 border border-solid border-gray-300
+                 rounded
+                 transition
+                 ease-in-out
+                 m-0
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='status' placeholder='Status' value={input.status} type="number" onChange={e=>handleVatChangeInput(index,e)}>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                  </select>
+             
+
+
+                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={handleVatSubmit} type='submit'>Save</button>
+                 <button class="inline-block px-6 py-2.5  bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleRemoveVat(index)} type='submit'>Remove</button>
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+      )) }
+     </form>
+
+    </div>
   </div>
 
 

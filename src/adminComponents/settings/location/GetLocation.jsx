@@ -120,26 +120,7 @@ useEffect(()=>{
         <table class="min-w-full">
           <thead class="bg-white border-b">
             <tr>
-              <th>
-              <div class="accordion font-sans" id="accordionExample">
-  <div class="">
-   
-     
-      <button class= " " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true"
-        aria-controls="collapseOne1">
-        + SubLocatoin
-      </button>
-     
-   
-    
-  </div>
-      
-  
-  
-</div>
-
-
-              </th>
+            <th>#</th>
               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                 Location
               </th>
@@ -174,19 +155,58 @@ useEffect(()=>{
 
 
       <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-        <td>
+        {/* <td>
           <div id="collapseOne1" class="accordion-collapse collapse show" aria-labelledby="headingOne"
       data-bs-parent="#accordionExample">
       <div class="accordion-body py-4 px-5">
-        {/* <li class="icon"><Link to={"/admin/location"}>location</Link></li>
+        <li class="icon"><Link to={"/admin/location"}>location</Link></li>
         <li><Link to={"/admin/categories"}>Categories</Link></li>
-        <li><Link to={"/admin/package"}>Package</Link></li> */}
+        <li><Link to={"/admin/package"}>Package</Link></li>
         <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                 Order:
               </th>
               <td>89</td>
       </div>
-    </div></td>
+    </div></td> */}
+    <td>
+    <div class="accordion-item bg-white border border-gray-200">
+    <h2 class="accordion-header mb-0" id="headingThree">
+      <button class="
+        accordion-button
+        collapsed
+        relative
+        flex
+        items-center
+        w-full
+        py-4
+        px-5
+        text-base text-gray-800 text-left
+        bg-white
+        border-0
+        rounded-none
+        transition
+        focus:outline-none
+      " type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+        aria-controls="collapseThree">
+        Sub
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+      data-bs-parent="#accordionExample">
+      <div class="accordion-body py-4 px-5">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default,
+        until the collapse plugin adds the appropriate classes that we use to style each
+        element. These classes control the overall appearance, as well as the showing and
+        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+        our default variables. It's also worth noting that just about any HTML can go within
+        the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+
+    </td>
+    
+
              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
     <a href="#" onClick={() => toggleDetails(user.location.locationName)}>
       {user.location.locationName}
