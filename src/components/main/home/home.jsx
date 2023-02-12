@@ -7,10 +7,10 @@ const home = () => {
   return (
     <div className='grid gap-4'>
          <div
-          className={`relative w-full overflow-hidden shadow-xl rounded-md mt-[50px] lg:mt-3`}
+          class="relative w-full overflow-hidden shadow-xl rounded-md mt-[50px] lg:mt-3 "
         >
           <div className="relative">
-            <div className=" absolute top-0 left-0 rounded-md  w-full h-[100%] blur-[4px]"></div>
+            <div className=" absolute top-0 left-0 rounded-md  w-52 h-[100%] blur-[4px]"></div>
             <div className="relative z-10">
               <img
                 className=" mx-auto rounded-md h-[253px] max-w-[100%] object-cover sm:object-contain"

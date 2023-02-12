@@ -8,6 +8,7 @@ import Categories from "./adminComponents/settings/categories/Categories";
 import Location from "./adminComponents/settings/location/Addlocation";
 import GetLocation from "./adminComponents/settings/location/GetLocation";
 import Package from "./adminComponents/settings/package/Package";
+import Product from "./adminComponents/allproduct/Product";
 
 
 
@@ -28,6 +29,8 @@ function App() {
              <Route path="/admin/location" element={< Location />}/>
              <Route path="/admin/location" element={< GetLocation />}/>
              <Route path="/admin/package" element={< Package />}/>
+             <Route path="/admin/product" element={< Product />}/>
+             <Route path="*" element={<h1>PAGE NOT FOUND</h1>}/>
               
               {/* <Route path="/admin/new" element={<New/>}/>
               <Route path="/admin/categories" >

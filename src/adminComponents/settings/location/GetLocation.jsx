@@ -169,41 +169,10 @@ useEffect(()=>{
       </div>
     </div></td> */}
     <td>
-    <div class="accordion-item bg-white border border-gray-200">
-    <h2 class="accordion-header mb-0" id="headingThree">
-      <button class="
-        accordion-button
-        collapsed
-        relative
-        flex
-        items-center
-        w-full
-        py-4
-        px-5
-        text-base text-gray-800 text-left
-        bg-white
-        border-0
-        rounded-none
-        transition
-        focus:outline-none
-      " type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-        aria-controls="collapseThree">
-        Sub
-      </button>
-    </h2>
-    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-      data-bs-parent="#accordionExample">
-      <div class="accordion-body py-4 px-5">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default,
-        until the collapse plugin adds the appropriate classes that we use to style each
-        element. These classes control the overall appearance, as well as the showing and
-        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-        our default variables. It's also worth noting that just about any HTML can go within
-        the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-
+    <p class="md:space-x-1 space-y-1 md:space-y-0 mb-4">
+    <button class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>
+    </p>
+    
     </td>
     
 
@@ -225,6 +194,7 @@ useEffect(()=>{
     <Link to='/edit' class='btn btn-blue mx-2'> Edit</Link>
     <button class="bg-red-600" onClick={() => handleDelete(user.location._id)}>Delete</button>
   </td>
+  
   <thead>
   
   
@@ -269,6 +239,13 @@ useEffect(()=>{
             <td>Status</td>
             <td>{user.sublocations.status}</td>
           </tr>
+          <div>
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="block p-6 rounded-lg shadow-lg bg-white">
+        Some placeholder content for the second collapse component of this multi-collapse example. This panel is hidden by default but revealed when the user activates the relevant trigger.
+      </div>
+    </div>
+  </div>
         </tbody>
       </table>
     </td>

@@ -12,7 +12,7 @@ import BookIcon from '@mui/icons-material/Book';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Categories from '../settings/categories/Categories';
+// import Categories from '../settings/categories/Categories';
 import { Link, Router } from 'react-router-dom';
 const Sidebar = () => {
 
@@ -26,7 +26,7 @@ const Sidebar = () => {
             <li><DashboardIcon className='icon' /> <a href="/"><span>Dashboard</span></a></li>
             <p className="title">LISTS</p>
             <li><PersonIcon className='icon'/><a href="/users"><span>Users</span></a></li>
-            <li><ProductionQuantityLimitsIcon className='icon'/><span>Products</span></li>
+            <li><ProductionQuantityLimitsIcon className='icon'/><Link to={"/admin/product"}><span>Products</span></Link></li>
             <li><ShoppingCartCheckoutIcon className='icon'/><span>Orders</span></li>
             <li><RoomServiceIcon className='icon'/><span>Delivery</span></li>
             <p className="title">USEFUL</p>

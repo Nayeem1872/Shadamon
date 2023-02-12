@@ -219,7 +219,7 @@ const getUser = async()=>{
 
 };
 getUser()
-console.log(allFeature)
+// console.log(allFeature)
 
 
 
@@ -271,14 +271,15 @@ function handleBothSubmit (){
     addCatData (catData)
     handleImg(catData)
     console.log(catData)
+    console.log(cat.categoryImg)
 
   }
 
 
   const submitCatForm = (e)=>{
     e.preventDefault()
-    const formData = new FormData()
-    formData.append("image",cat)
+    // const formData = new FormData()
+    // formData.append("image",cat)
 
 
     catobj()
@@ -305,7 +306,7 @@ function handleBothSubmit (){
 
   const [img,setImg]=useState("")
   const handleImg = (e)=>{
-    console.log(e.target.files)
+    // console.log(e.target.files)
     setImg(e.target.files[0])
     console.log(img)
   }

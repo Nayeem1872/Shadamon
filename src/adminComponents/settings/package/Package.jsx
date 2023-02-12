@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../sidebar/Sidebar';
 import Navbar from '../../navbar/Navbar';
+import axios from 'axios';
+
+import api from '../../../apiEndpoint/apiEndpoint'
 
 const Package = () => {
 // single page Add Button
@@ -147,6 +150,99 @@ const handleVatSubmit = (e)=>{
 
 }
 
+// Add Sub Cat into option
+const [sub,setSub]=useState([])
+// useEffect(()=>{
+// const getUser =async()=>{
+//   try{
+//     const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
+//     console.log(reqData)
+//     setSub(reqData.data.data)
+
+//   }catch(error){
+
+//       console.log(error)
+//   }
+//   getUser()
+//   console.log(sub)
+
+
+
+// }
+
+
+
+// },[])
+
+const fetchSubCat =async()=>{
+  try{
+    const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
+    console.log(reqData)
+    setSub(reqData.data.data)
+
+  }catch(error){
+
+      console.log(error)
+  }
+}
+
+
+// post BUNDLE
+const [data,setData]=useState()
+const onInputChange =(e)=>{
+  setData({...data,[e.target.name]:e.target.value});
+}
+
+const dataobj = ()=>{
+
+  let addData = {}
+  addData={
+    oldPrice:data.bundle.oldPrice,
+    price:data.bundle.price,
+    validDays: data.bundle.validDays,
+    parent2ID:data.bundle.postAccess.parentId,
+    post:data.bundle.postAccess.noOfPost,
+    subcat:data.bundle.post.subcategories,
+    reach:data.bundle.post.reach,
+    click:data.bundle.post.click,
+    stickerSort:data.bundle.stickerSort,
+    packageFeature:data.bundle.packageFeature,
+    uncheckFeature:data.bundle.uncheckFeature,
+    bestSuggestion:data.bundle.bestSuggestion,
+    note:data.bundle.note
+
+
+  }
+  console.log(addData)
+
+
+  addBundle(addData)
+}
+const bundleSubmit = (e)=>{
+  e.preventDefault()
+  dataobj()
+
+}
+async function addBundle(formdata){
+
+  const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
+
+    body:JSON.stringify(formdata)
+
+  })
+
+
+
+
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -265,7 +361,7 @@ const handleVatSubmit = (e)=>{
 
 
 
-  <button type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalXl">+ ADD NEW</button>
+  <button type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalXl" onClick={()=>fetchSubCat()} >+ ADD NEW</button>
 
   <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-xl relative w-auto pointer-events-none">
@@ -276,9 +372,9 @@ const handleVatSubmit = (e)=>{
         </h5>
         
 
-        <button type="button"
+        {/* <button type="button"
           class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-          data-bs-dismiss="modal" aria-label="Close"></button>
+          data-bs-dismiss="modal" aria-label="Close"></button> */}
       </div>
       <div class="flex">
       <div class="modal-body relative p-4 ">
@@ -327,8 +423,11 @@ const handleVatSubmit = (e)=>{
         m-0
         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
       "
-      id="exampleFormControlInput1"
+      // id="exampleFormControlInput1"
       placeholder="Old Price"
+      name='oldPrice'
+      value={data.bundle.oldPrice}
+      
     />
         <input
       type="text"
@@ -422,6 +521,7 @@ const handleVatSubmit = (e)=>{
       "
       id="exampleNumber0"
       placeholder="Rent Anything"
+      name=""
     />
      <input
       type="number"
@@ -490,8 +590,8 @@ const handleVatSubmit = (e)=>{
       placeholder="Create"
     />
     </div>
-    <div class="   mt-2">
-    <h5 class=" w-auto mt-8 text-xl font-medium leading-normal text-gray-800 border-b border-gray-200" id="exampleModalXlLabel">
+    <div class=" w-full   mt-2">
+    <h5 class="  w-auto mt-8 text-xl mb-2 font-medium text-center leading-normal text-gray-800 border-b border-gray-200" id="exampleModalXlLabel">
     Category Wise Every Post reach and click and how many
         </h5>
 
@@ -521,9 +621,10 @@ const handleVatSubmit = (e)=>{
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       value={input.Categories}
       placeholder="Category" name='Categories' onChange={e=>handleCrcChangeInput(index,e)} >
-
-        <option></option>
-      </select>
+ {sub.map(cat => (
+                         <option value={cat._id} >{cat.subCategoryName}</option>
+                             ))}
+    </select>
             <input
             name='Reach'
             class=" form-control
@@ -576,8 +677,8 @@ const handleVatSubmit = (e)=>{
 
 
       {/* Category Wise Sort Item Access */}
-     <div>
-     <h5 class=" w-auto mt-8 text-xl font-medium leading-normal text-gray-800 border-b border-gray-200" id="exampleModalXlLabel">
+     <div class="">
+     <h5 class=" w-auto mt-8 text-xl mb-2 font-medium leading-normal text-center text-gray-800 border-b border-gray-200" id="exampleModalXlLabel">
      Category Wise Sort Item Access
         </h5>
         <div>
@@ -606,9 +707,11 @@ const handleVatSubmit = (e)=>{
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       value={input.Categories}
       placeholder="Category" onChange={e=>handleCuChangeInput(index,e)} >
-
-        <option></option>
-      </select>
+ {sub.map(cat => (
+                         <option value={cat._id} >{cat.subCategoryName}</option>
+                             ))}
+    </select>
+      
             
               <input class=" form-control
                  
@@ -857,6 +960,7 @@ const handleVatSubmit = (e)=>{
                  </select>
 
       </div>
+      
 
 
       <button type="button" class="inline-block mt-3 px-6 py-2.5 bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out">Save</button>
@@ -899,54 +1003,182 @@ const handleVatSubmit = (e)=>{
       {inputFields.map((input,index)=>(
         <div class="flex gap-3"  key={index}>
           
-          <input class="
+          <table class="table-auto">
+     
+       <thead>
+         <tr>
+           <th>Categories</th>
+           <th>Reach</th>
+           <th>Click</th>
+           <th>Price</th>
+           <th>Min Amount</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td><input class="
         
-          form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="text" onChange={e=>handleChangeInput(index,e)} />
+        form-control
+               
+               w-60
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="text" onChange={e=>handleChangeInput(index,e)} /> </td>
+          
+           <td class="mx-3"><input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+               <input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+               </td>
+           <td>     <input class="
+        
+        form-control
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+                    <input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} /></td>
+
+               <td>     <input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+                    <input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" 
+              //  onChange={e=>handleChangeInput(index,e)} 
+               /></td>
+               <td>     <input class="
+        
+        form-control
+               
+               w-auto
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+                    <input class="
+        
+        form-control
+               
+               w-60
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} /></td>
+         </tr>
+         
+       </tbody>
+     </table>
                 
-            <input class=" form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Sort' lable="Sort" value={input.Sort} type="text" onChange={e=>handleChangeInput(index,e)}/>
-              <input class=" form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" value={input.perDay} type="number" onChange={e=>handleChangeInput(index,e)}/>
+        
 
 
                  <button onClick={handleSubmit} type='submit'>Save</button>
@@ -968,24 +1200,6 @@ const handleVatSubmit = (e)=>{
       )) }
      </form>
 
-     <table class="table-auto">
-
-  <thead>
-    <tr>
-      <th>Song</th>
-      <th>Artist</th>
-      <th>Year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>The Sliding Mr. Bones </td>
-      <td>Malcolm Lockyer</td>
-      <td>1961</td>
-    </tr>
-    
-  </tbody>
-</table>
 
 
     </div>

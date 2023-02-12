@@ -26,7 +26,7 @@ function App() {
           < Login1 />
           <Signup />
       </div>
-      <div className="grid gap-8 grid-cols-2 px-4">
+      <div className="grid gap-8 grid-cols-2 px-4 ">
       < Home />
       <div class="relative h-32 w-32 pr-4 bg-gray-100">
         <div class="absolute inset-y-0 left-12 w-32 bg-gray-100 ">
