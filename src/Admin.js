@@ -26,15 +26,9 @@ function App() {
           < Login1 />
           <Signup />
       </div>
-      <div className="grid gap-8 grid-cols-2 px-4 ">
+      <div className="flex  ">
+        <div className="justify-center items-center scroll-smooth  ">
       < Home />
-      <div class="relative h-32 w-32 pr-4 bg-gray-100">
-        <div class="absolute inset-y-0 left-12 w-32 bg-gray-100 ">
-      < Advertisement />
-      </div>
-      </div>
-      </div>
-      </div>
       <div className=" flex justify-center items-center bg-gray-100">
         <div className=" col-span-2">
           < Search />
@@ -43,6 +37,14 @@ function App() {
         
       </div>
       
+      </div>
+      <div class=" mt-4 ml-12 lg:block hidden  bg-gray-100">
+       
+      < Advertisement />
+     
+      </div>
+      </div>
+      </div>
       
     </div>
   );

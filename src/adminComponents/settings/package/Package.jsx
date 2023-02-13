@@ -1,55 +1,268 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef}  from 'react'
 import Sidebar from '../../sidebar/Sidebar';
 import Navbar from '../../navbar/Navbar';
 import axios from 'axios';
 
 import api from '../../../apiEndpoint/apiEndpoint'
+import { Traffic } from '@mui/icons-material';
 
 const Package = () => {
+  // const [abc, setAbc] = useState("some default value");
 // single page Add Button
   const [inputFields,setInputFields] = useState([
-    {Categories:'', Sort:'',perDay:''}
+    {subcategories1:'', reach:'',click:'', price:'',minAmount:'',reach1:'',click1:'', price1:'',minAmount1:''},
+  
 
   ]);
 
-  const handleChangeInput =(index,e)=>{
+  const handleChangeSingleInput =(index,e)=>{
 
     console.log(e.target.name,index)
     const values =[...inputFields];
    values[index][e.target.name]= e.target.value
     setInputFields(values);
   }
-  const handleSubmit = (e)=>{
+  const handleSingleSubmit = (e)=>{
     e.preventDefault()
     console.log("InputFields", inputFields)
 
   }
-  const handleAddFields = ()=>{
+  const handleAddSingleFields = ()=>{
 
-     setInputFields([...inputFields,{Categories:'',Sort:'',perDay:''}])
+     setInputFields([...inputFields,
+      
+      {subcategories1:'', reach:'',click:'', price:'',minAmount:'',reach1:'',click1:'', price1:'',minAmount1:''},
+      
+    
+    ])
 
   }
-  const handleRemove = (i)=>{
+  const handleSingleRemove = (i)=>{
     const values = [...inputFields];
     values.splice(i,1);
     setInputFields(values)
 
   }
+
+// handle both funtion
+const handleBothInput = (index,e)=>{
+
+  handleChangeSingleInput(index,e)
+  onInputSignalChange(e)
+
+
+}
+
+const handleBothSubmit = ()=>{
+
+  handleSingleSubmit()
+  bundleSignalSubmit()
+}
+
+// put subcat into option
+const [subCat,setsubCat]= useState ([]);
+
+useEffect(()=>{
+const getUser = async()=>{
+      try{
+        const reqData = await axios.get(`${api.url}/admin/allsubcategory`,{withCredentials:true});
+        setsubCat(reqData.data.data);
+
+
+
+      }catch(error){
+
+        console.log(error);
+
+      }
+
+};
+getUser()
+// console.log(type)
+
+
+
+},[])
+
+
+
+
+// post single 
+const [dataSignal,setDataSignal]=useState()
+const onInputSignalChange =(e)=>{
+  setDataSignal({...dataSignal,[e.target.name]:e.target.value});
+}
+
+
+
+const dataSignalobj = ()=>{
+
+ 
+
+  let addData = {}
+  addData={
+ 
+
+
+    subcategories:dataSignal.subcategories1,
+    promote:{
+      price:dataSignal.price,
+      reach:dataSignal.reach,
+      click:dataSignal.click,
+      minAmount:dataSignal.minAmount,
+    },
+    Traffic:{
+      price:dataSignal.price1,
+      reach:dataSignal.reach1,
+      click:dataSignal.click1,
+      minAmount:dataSignal.minAmount1
+    }
+
+
+
+  }
+  console.log(addData)
+
+
+  // addBundle(addData)
+}
+const bundleSignalSubmit = (e)=>{
+  e.preventDefault()
+  dataSignalobj()
+
+}
+// async function addBundle(formdata){
+
+//   const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
+
+//     body:JSON.stringify(formdata)
+
+//   })
+
+
+
+
+
+// }
+
+
+
+
+
+// post sort 
+const [dataSort,setDataSort]=useState()
+const onInputSortChange =(e)=>{
+  setDataSort({...dataSort,[e.target.name]:e.target.value});
+}
+
+
+
+const dataSortobj = ()=>{
+
+ 
+
+  let addData = {}
+  addData={
+    subcategories:dataSort.subcategories,
+    sortId:dataSort.sortId,
+    price:dataSort.price,
+
+
+
+
+  }
+  console.log(addData)
+
+
+  // addBundle(addData)
+}
+const bundleSortSubmit = (e)=>{
+  e.preventDefault()
+  dataSortobj()
+
+}
+// async function addBundle(formdata){
+
+//   const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
+
+//     body:JSON.stringify(formdata)
+
+//   })
+
+
+
+
+
+// }
+// handle both funtion
+const handleBothInput1 = (index,e)=>{
+
+  handleChangeSortInput(index,e)
+  onInputSortChange(e)
+
+
+}
+
+
+
+
+// Add Sort
+
+const [sort,setInputSort] = useState([
+  {subcategories:'', sortId:'',price:''}
+
+]);
+
+const handleChangeSortInput =(index,e)=>{
+
+  console.log(e.target.name,index)
+  const values =[...sort];
+ values[index][e.target.name]= e.target.value
+  setInputSort(values);
+}
+const handleSortSubmit = (e)=>{
+  e.preventDefault()
+  console.log("InputFields", sort)
+
+}
+const handleAddSortFields = ()=>{
+
+   setInputSort([...sort,{subcategories:'',sortId:'',price:''}])
+
+}
+const handleSortRemove = (i)=>{
+  const values = [...sort];
+  values.splice(i,1);
+  setInputSort(values)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
   // CRC
   const [crc,setCrc] = useState([
-    {Categories:'', Reach:'',Sort:''}
+    {subcategories:'',reach:'',click:''}
 
   ]);
   const handleCrcChangeInput =(index,e)=>{
 
     console.log(e.target.name,index)
-    const values =[...inputFields];
+    const values =[...crc];
    values[index][e.target.name]= e.target.value
     setCrc(values);
   }
   const handleAddCrcFields = ()=>{
 
-    setCrc([...crc,{Categories:'',Reach:'',Sort:''}])
+    setCrc([...crc,{subcategories:'',reach:'',click:''}])
 
  }
  const handleCrcRemove = (i)=>{
@@ -66,7 +279,7 @@ const handleCrcSubmit = (e)=>{
 
 // CU
 const [cu,setCu] = useState([
-  {Categories:'', Urgent:''}
+  {subcategories:'', sort:''}
 
 ]);
 const handleCuChangeInput =(index,e)=>{
@@ -78,7 +291,7 @@ const handleCuChangeInput =(index,e)=>{
 }
 const handleAddCu = ()=>{
 
-  setCu([...cu,{Categories:'',Urgent:''}])
+  setCu([...cu,{subcategories:'',sort:''}])
 
 }
 const handleRemoveCu = (i)=>{
@@ -95,7 +308,7 @@ const handleCuSubmit = (e)=>{
 
 // Coupon ADD
 const [coupon,setCoupon] = useState([
-  {totalPost:'', code:'', inTime:'', disAmount:'', validDays:''}
+  {totalPost:'', couponCode:'', inTime:'', discAmount:'', validDays:'',status:''}
 
 ]);
 const handleCouponChangeInput =(index,e)=>{
@@ -107,7 +320,7 @@ const handleCouponChangeInput =(index,e)=>{
 }
 const handleAddCoupon = ()=>{
 
-  setCoupon([...coupon,{totalPost:'', code:'', inTime:'', disAmount:'', validDays:''}])
+  setCoupon([...coupon,{totalPost:'', couponCode:'', inTime:'', discAmount:'', validDays:'',status:''}])
 
 }
 const handleRemoveCoupon = (i)=>{
@@ -121,9 +334,75 @@ const handleCouponSubmit = (e)=>{
   console.log("InputFields", coupon)
 
 }
+// handle both coupon Input
+const handleBothCoupon = (index,e)=>{
+  handleCouponChangeInput(index,e)
+  onInputCouponChange(e)
+
+
+
+}
+
+
+// coupon post request
+
+const [dataCoupon,setDataCoupon]=useState()
+const onInputCouponChange =(e)=>{
+  setDataCoupon({...dataCoupon,[e.target.name]:e.target.value});
+}
+
+
+
+const dataCouponobj = ()=>{
+
+ 
+
+  let addData = {}
+  addData={
+  totalPost:dataCoupon.totalPost,
+  inTime:dataCoupon.inTime,
+  discAmount:dataCoupon.discAmount,
+  validDays:dataCoupon.validDays,
+  status:dataCoupon.status,
+  couponCode:dataCoupon.couponCode
+
+
+
+
+  }
+  console.log(addData)
+
+
+  // addBundle(addData)
+}
+const bundleCouponSubmit = (e)=>{
+  e.preventDefault()
+  dataCouponobj()
+
+}
+// async function addBundle(formdata){
+
+//   const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
+
+//     body:JSON.stringify(formdata)
+
+//   })
+
+
+
+
+
+
+
+
+
+
+
+
+
 // VAT ADD
 const [vat,setVat] = useState([
-  {vatPer:'', status:''}
+  {addVat:'', status:''}
 
 ]);
 const handleVatChangeInput =(index,e)=>{
@@ -135,7 +414,7 @@ const handleVatChangeInput =(index,e)=>{
 }
 const handleAddVat = ()=>{
 
-  setVat([...vat,{vatPer:'', status:''}])
+  setVat([...vat,{addVat:'', status:''}])
 
 }
 const handleRemoveVat = (i)=>{
@@ -149,36 +428,75 @@ const handleVatSubmit = (e)=>{
   console.log("InputFields", vat)
 
 }
-
-// Add Sub Cat into option
-const [sub,setSub]=useState([])
-// useEffect(()=>{
-// const getUser =async()=>{
-//   try{
-//     const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
-//     console.log(reqData)
-//     setSub(reqData.data.data)
-
-//   }catch(error){
-
-//       console.log(error)
-//   }
-//   getUser()
-//   console.log(sub)
+// handle both
+const handleBothVat = (index,e)=>{
+  handleVatChangeInput(index,e)
+  onInputVatChange(e)
 
 
 
-// }
+}
 
 
 
-// },[])
+// Vat Post request
 
-const fetchSubCat =async()=>{
+const [dataVat,setDataVat]=useState()
+const onInputVatChange =(e)=>{
+  setDataVat({...dataVat,[e.target.name]:e.target.value});
+}
+
+
+
+const dataVatobj = ()=>{
+
+ 
+
+  let addData = {}
+  addData={
+    addVat:dataVat.addVat,
+    status:dataVat.status
+
+
+
+  }
+  console.log(addData)
+
+
+  // addBundle(addData)
+}
+const bundleVatSubmit = (e)=>{
+  e.preventDefault()
+  dataVatobj()
+
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// get all sort
+
+const [sort1,setSort1]=useState([])
+
+
+const fetchSort =async()=>{
   try{
-    const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
+    const reqData = await axios.get( `${api.url}/package/sort`,{withCredentials:true});
     console.log(reqData)
-    setSub(reqData.data.data)
+    setSort1(reqData.data.data)
+    // fetchParent();
 
   }catch(error){
 
@@ -187,59 +505,127 @@ const fetchSubCat =async()=>{
 }
 
 
+
+
+// Add Sub Cat into option
+const [sub,setSub]=useState([])
+
+
+const fetchSubCat =async()=>{
+  try{
+    const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
+    console.log(reqData)
+    setSub(reqData.data.data)
+    fetchParent();
+
+  }catch(error){
+
+      console.log(error)
+  }
+}
+
+// handle subCat/Sort
+const handleSubCatSort =()=>{
+  fetchSubCat()
+  fetchSort()
+
+}
+
 // post BUNDLE
 const [data,setData]=useState()
 const onInputChange =(e)=>{
   setData({...data,[e.target.name]:e.target.value});
 }
 
+const [parentArray,setParentArray]=useState([])
+
+const fetchParent =async()=>{
+  try{
+    const reqData = await axios.get( `${api.url}/admin/allparentcat`,{withCredentials:true});
+    console.log(reqData)
+    setParentArray(reqData.data.data)
+
+  }catch(error){
+
+      console.log(error)
+  }
+}
+
+
 const dataobj = ()=>{
+
+  const postAccessData = [
+    // {
+    //   parentId:parentArray[0]._id,
+    //   noOfPost:noOfPost[0]
+    // },
+    // {
+    //   parentId:parentArray[1]._id,
+    //   noOfPost:noOfPost[1]
+    // },
+    // {
+    //   parentId:parentArray[2]._id,
+    //   noOfPost:noOfPost[2]
+    // },
+    // {
+    //   parentId:parentArray[3]._id,
+    //   noOfPost:noOfPost[3]
+    // },
+    // {
+    //   parentId:parentArray[4]._id,
+    //   noOfPost:noOfPost[4]
+    // },
+  ]
 
   let addData = {}
   addData={
-    oldPrice:data.bundle.oldPrice,
-    price:data.bundle.price,
-    validDays: data.bundle.validDays,
-    parent2ID:data.bundle.postAccess.parentId,
-    post:data.bundle.postAccess.noOfPost,
-    subcat:data.bundle.post.subcategories,
-    reach:data.bundle.post.reach,
-    click:data.bundle.post.click,
-    stickerSort:data.bundle.stickerSort,
-    packageFeature:data.bundle.packageFeature,
-    uncheckFeature:data.bundle.uncheckFeature,
-    bestSuggestion:data.bundle.bestSuggestion,
-    note:data.bundle.note
+    name:data.name,
+    oldPrice:data.oldPrice,
+    price:data.price,
+    validDays: data.validDays,
+    postAccess:{
+              parentId:data.parentId,
+
+              noOfPost:data.noOfPost,
+    },
+    post: crc,
+    stickerSort:cu,
+    packageFeature:data.packageFeature,
+    uncheckFeature:data.uncheckFeature,
+    bestSuggestion:data.bestSuggestion,
+    note:data.note,
+    packageStatus:data.packageStatus
+
 
 
   }
   console.log(addData)
 
 
-  addBundle(addData)
+  // addBundle(addData)
 }
 const bundleSubmit = (e)=>{
   e.preventDefault()
   dataobj()
 
 }
-async function addBundle(formdata){
+// async function addBundle(formdata){
 
-  const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
+//   const sendData = await axios.post(`${api.url}/`,formdata,{withCredentials:true},{
 
-    body:JSON.stringify(formdata)
+//     body:JSON.stringify(formdata)
 
-  })
-
-
-
-
-
-}
+//   })
 
 
 
 
+
+// }
+
+
+
+const [status, setStatus] = useState(true);
 
 
 
@@ -295,7 +681,7 @@ async function addBundle(formdata){
       hover:border-transparent hover:bg-gray-100
       focus:border-transparent
     " id="tabs-profile-tab3" data-bs-toggle="pill" data-bs-target="#tabs-profile3" role="tab"
-      aria-controls="tabs-profile3" aria-selected="false">Single</a>
+      aria-controls="tabs-profile3" aria-selected="false" onClick={()=>fetchSubCat()}>Single</a>
   </li>
   <li class="nav-item" role="presentation">
     <a href="#tabs-messages3" class="
@@ -313,7 +699,7 @@ async function addBundle(formdata){
       hover:border-transparent hover:bg-gray-100
       focus:border-transparent
     " id="tabs-messages-tab3" data-bs-toggle="pill" data-bs-target="#tabs-messages3" role="tab"
-      aria-controls="tabs-messages3" aria-selected="false">Sorts</a>
+      aria-controls="tabs-messages3" aria-selected="false" onClick={()=>handleSubCatSort()}>Sorts</a>
   </li>
   <li class="nav-item" role="presentation">
     <a href="#tabs-messages4" class="
@@ -402,6 +788,8 @@ async function addBundle(formdata){
       "
       id="exampleFormControlInput1"
       placeholder="Name"
+      name="name"
+      onChange={(e) => onInputChange(e)} 
     />
     <input
       type="text"
@@ -426,7 +814,8 @@ async function addBundle(formdata){
       // id="exampleFormControlInput1"
       placeholder="Old Price"
       name='oldPrice'
-      value={data.bundle.oldPrice}
+      onChange={(e) => onInputChange(e)} 
+      // value={data.bundle.oldPrice}
       
     />
         <input
@@ -450,6 +839,8 @@ async function addBundle(formdata){
       "
       id="exampleFormControlInput1"
       placeholder="New Price"
+      name='price'
+      onChange={(e) => onInputChange(e)} 
     />
     
      <input
@@ -475,9 +866,12 @@ async function addBundle(formdata){
       "
       id="exampleNumber0"
       placeholder="Valid"
+      name='validDays'
+      onChange={(e) => onInputChange(e)} 
     />
     </div>
     <div class="flex w-3/2 mt-3 gap-2">
+   
      <input
       type="number"
       class="
@@ -499,6 +893,9 @@ async function addBundle(formdata){
       "
       id="exampleNumber0"
       placeholder="Sell Any"
+      name='noOfPost[]'
+      
+      onChange={(e) => onInputChange(e)} 
     />
      <input
       type="number"
@@ -521,7 +918,7 @@ async function addBundle(formdata){
       "
       id="exampleNumber0"
       placeholder="Rent Anything"
-      name=""
+      name='noOfPost[]'
     />
      <input
       type="number"
@@ -544,6 +941,7 @@ async function addBundle(formdata){
       "
       id="exampleNumber0"
       placeholder="Post"
+      
     />
      <input
       type="number"
@@ -619,14 +1017,14 @@ async function addBundle(formdata){
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      value={input.Categories}
-      placeholder="Category" name='Categories' onChange={e=>handleCrcChangeInput(index,e)} >
+      value={input.subcategories}
+      placeholder="Category" name='subcategories' onChange={e=>handleCrcChangeInput(index,e)} >
  {sub.map(cat => (
                          <option value={cat._id} >{cat.subCategoryName}</option>
                              ))}
     </select>
             <input
-            name='Reach'
+            name='reach'
             class=" form-control
                  
                  w-60
@@ -641,9 +1039,9 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Reach"  lable="Sort" value={input.Reach} type="text" onChange={e=>handleCrcChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Reach"  lable="Sort" value={input.reach} type="text" onChange={e=>handleCrcChangeInput(index,e)}/>
               <input 
-              name='Sort'
+              name='click'
               class=" form-control
                  
                  w-60
@@ -658,7 +1056,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Click"  lable="Per Day Price" value={input.Sort} type="number" onChange={e=>handleCrcChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Click"  lable="Per Day Price" value={input.click} type="number" onChange={e=>handleCrcChangeInput(index,e)}/>
 
 
                  <button class="inline-block mt-3 px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleAddCrcFields()} type='submit'>Add</button>
@@ -689,7 +1087,7 @@ async function addBundle(formdata){
     <div class="flex mt-3 gap-3" key={index}>
 
       <select 
-      name='Categories'
+      name='subcategories'
       class="form-control
                  
       w-60
@@ -705,7 +1103,7 @@ async function addBundle(formdata){
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      value={input.Categories}
+      value={input.subcategories}
       placeholder="Category" onChange={e=>handleCuChangeInput(index,e)} >
  {sub.map(cat => (
                          <option value={cat._id} >{cat.subCategoryName}</option>
@@ -727,7 +1125,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Urgent' lable="Per Day Price" placeholder="Urgent" value={input.Urgent} type="number" onChange={e=>handleCuChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='sort' placeholder="Urgent" value={input.sort} type="number" onChange={e=>handleCuChangeInput(index,e)}/>
 
 
                  <button class="inline-block mt-3 px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleAddCu()} type='submit'>Add</button>
@@ -769,7 +1167,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" placeholder='Checked 1'  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" lable="Per Day Price" placeholder='Checked 1' onChange={(e) => onInputChange(e)}  type="text" name="packageFeature"/>
       <input class=" form-control
                  
                  w-60
@@ -784,7 +1182,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 2' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder='Checked 2' lable="Per Day Price" name="packageFeature" onChange={(e) => onInputChange(e)} type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -799,7 +1197,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 3' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="packageFeature" placeholder='Checked 3' lable="Per Day Price"  onChange={(e) => onInputChange(e)} type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -814,7 +1212,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 4' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="packageFeature" placeholder='Checked 4' lable="Per Day Price" onChange={(e) => onInputChange(e)}  type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -829,7 +1227,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 5' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="packageFeature" placeholder='Checked 5' onChange={(e) => onInputChange(e)} lable="Per Day Price"  type="text"/>
 
     </div>
 
@@ -855,7 +1253,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" placeholder='Checked 1'  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="uncheckFeature" lable="Per Day Price" onChange={(e) => onInputChange(e)} placeholder='Checked 1'  type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -870,7 +1268,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 2' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="uncheckFeature" onChange={(e) => onInputChange(e)} placeholder='Checked 2' lable="Per Day Price"  type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -885,7 +1283,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 3' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="uncheckFeature" onChange={(e) => onInputChange(e)} placeholder='Checked 3' lable="Per Day Price"  type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -900,7 +1298,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 4' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="uncheckFeature" onChange={(e) => onInputChange(e)} placeholder='Checked 4' lable="Per Day Price"  type="text"/>
       <input class=" form-control
                  
                  w-60
@@ -915,7 +1313,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' placeholder='Checked 5' lable="Per Day Price"  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="uncheckFeature" onChange={(e) => onInputChange(e)} placeholder='Checked 5' lable="Per Day Price"  type="text"/>
 
     </div>
 
@@ -936,7 +1334,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" placeholder='Best Suggestion'  type="text"/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="bestSuggestion"  lable="Per Day Price" placeholder='Best Suggestion'  type="text" onChange={(e) => onInputChange(e)}/>
 
 <input class=" form-control
                  
@@ -952,18 +1350,16 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" placeholder='Note'  type="text"/>
-                 <select name="" id="">
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-
-                 </select>
-
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='note' placeholder='Note'  type="text" onChange={(e) => onInputChange(e)}/>
+                <select name="packageStatus" id="" value={status} onChange={(e) => setStatus(e.target.value === "true")}>
+    <option value="true">Active</option>
+    <option value="false">Inactive</option>
+  </select>
       </div>
       
 
 
-      <button type="button" class="inline-block mt-3 px-6 py-2.5 bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out">Save</button>
+      <button type="button" class="inline-block mt-3 px-6 py-2.5 bg-sky-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-sky-700 hover:shadow-lg focus:bg-sky-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-sky-800 active:shadow-lg transition duration-150 ease-in-out" onClick={bundleSubmit}>Save</button>
 
 
 
@@ -994,29 +1390,51 @@ async function addBundle(formdata){
 
 
   <div class="tab-pane fade" id="tabs-profile3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
-  <button type="button" class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddFields()}>
+  <button type="button" class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSingleFields()}>
     + Add New
   </button>
     <div class="">
 
-    <form class="" onSubmit={handleSubmit}>
+    <form class="" onSubmit={handleSingleSubmit}>
       {inputFields.map((input,index)=>(
         <div class="flex gap-3"  key={index}>
           
           <table class="table-auto">
      
-       <thead>
-         <tr>
-           <th>Categories</th>
-           <th>Reach</th>
-           <th>Click</th>
-           <th>Price</th>
-           <th>Min Amount</th>
-         </tr>
-       </thead>
-       <tbody>
-         <tr>
-           <td><input class="
+          <div class="flex flex-col">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <table class="min-w-full">
+          <thead class="border-b">
+            <tr>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Sub-Categories
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Reach
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Click
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Price
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Min-Amount
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-white border-b">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                
+                <div class="relative w-64">
+                
+                <select class="
         
         form-control
                
@@ -1032,9 +1450,30 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="text" onChange={e=>handleChangeInput(index,e)} /> </td>
-          
-           <td class="mx-3"><input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='subcategories1' value={input.subcategories1} type="text" 
+               onChange={e=>handleBothInput(index,e)}> 
+               {sub.map(sub=>(
+
+
+                 <option value={sub._id}>  
+             
+                {sub.subCategoryName}
+                 
+                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293l-3.293 3. 293 3. 293-3. 293z"/></svg>
+                 </div>
+               
+               
+               </option>
+
+))}
+               
+               </select>
+               
+</div>
+                </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <input class="
         
         form-control
                
@@ -1050,7 +1489,7 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='reach' lable="category" value={input.reach} type="number" onChange={e=>handleBothInput(index,e)} />
                <input class="
         
         form-control
@@ -1067,25 +1506,10 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
-               </td>
-           <td>     <input class="
-        
-        form-control
-        w-20
-               px-3
-               py-1.5
-               text-base
-               font-normal
-               text-gray-700
-               bg-white bg-clip-padding
-               border border-solid border-gray-300
-               rounded
-               transition
-               ease-in-out
-               m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
-                    <input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='reach1' lable="category" value={input.reach1} type="number" onChange={e=>handleBothInput(index,e)} />
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <input class="
         
         form-control
                
@@ -1101,9 +1525,8 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} /></td>
-
-               <td>     <input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='click' lable="category" value={input.click} type="number" onChange={e=>handleBothInput(index,e)} />
+               <input class="
         
         form-control
                
@@ -1119,8 +1542,10 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
-                    <input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='click1' lable="category" value={input.click1} type="number" onChange={e=>handleBothInput(index,e)} />
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <input class="
         
         form-control
                
@@ -1136,14 +1561,12 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" 
-              //  onChange={e=>handleChangeInput(index,e)} 
-               /></td>
-               <td>     <input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='price' lable="category" value={input.price} type="number" onChange={e=>handleBothInput(index,e)} />
+               <input class="
         
         form-control
                
-               w-auto
+        w-20
                px-3
                py-1.5
                text-base
@@ -1155,12 +1578,14 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} />
-                    <input class="
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='price1' lable="category" value={input.price1} type="number" onChange={e=>handleBothInput(index,e)} />
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <input class="
         
         form-control
                
-               w-60
+        w-20
                px-3
                py-1.5
                text-base
@@ -1172,17 +1597,50 @@ async function addBundle(formdata){
                transition
                ease-in-out
                m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="number" onChange={e=>handleChangeInput(index,e)} /></td>
-         </tr>
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='minAmount' lable="category" value={input.minAmount} type="number" onChange={e=>handleBothInput(index,e)} />
+               <input class="
+        
+        form-control
+               
+        w-20
+               px-3
+               py-1.5
+               text-base
+               font-normal
+               text-gray-700
+               bg-white bg-clip-padding
+               border border-solid border-gray-300
+               rounded
+               transition
+               ease-in-out
+               m-0
+               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='minAmount1' lable="category" value={input.minAmount1} type="number" onChange={e=>handleBothInput(index,e)} />
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                 <button onClick={bundleSignalSubmit} type='submit'>Save</button>
+                 <button class="mx-3" onClick={()=>handleSingleRemove(index)} type='submit'>Remove</button>
          
-       </tbody>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+       
+        
+           
+          
+         
+         
+         
+      
      </table>
                 
         
 
 
-                 <button onClick={handleSubmit} type='submit'>Save</button>
-                 <button onClick={()=>handleRemove(index)} type='submit'>Remove</button>
 
 
 
@@ -1208,15 +1666,15 @@ async function addBundle(formdata){
 
   {/* Sorts */}
   <div class="tab-pane fade" id="tabs-messages3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
-  <button type="button" class="inline-block px-6 py-2.5  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddFields()}>
+  <button type="button" class="inline-block px-6 py-2.5  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSortFields()}>
     + Add New
   </button>
     <div class="">
-    <form class="" onSubmit={handleSubmit}>
-      {inputFields.map((input,index)=>(
+    <form class="" onSubmit={handleSortSubmit}>
+      {sort.map((input,index)=>(
         <div class="flex gap-3"  key={index}>
 
-          <input class="
+          <select class="
         
           form-control
                  
@@ -1232,8 +1690,17 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Categories' lable="category" value={input.Categories} type="text" onChange={e=>handleChangeInput(index,e)} />
-            <input class=" form-control
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='subcategories' lable="category" value={input.subcategories} type="text" onChange={e=>handleBothInput1(index,e)}>
+ {sub.map(sub=>(
+
+
+<option value={sub._id}>{sub.subCategoryName}</option>
+
+))}
+</select>
+
+
+            <select class=" form-control
                  
                  w-60
                  px-3
@@ -1247,7 +1714,17 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='Sort' lable="Sort" value={input.Sort} type="text" onChange={e=>handleChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='sortId' lable="Sort" value={input.sortId} type="text" onChange={e=>handleBothInput1(index,e)}>
+                  
+                  {sort1.map(sort=>(
+
+                    <option value={sort._id}>{sort.sortName} </option>
+
+                  ))}
+                  
+                  
+                  
+                   </select>
               <input class=" form-control
                  
                  w-60
@@ -1262,11 +1739,11 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='perDay' lable="Per Day Price" value={input.perDay} type="number" onChange={e=>handleChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='price' lable="Per Day Price" value={input.price} type="number" onChange={e=>handleBothInput1(index,e)}/>
 
 
-                 <button onClick={handleSubmit} type='submit'>Save</button>
-                 <button onClick={()=>handleRemove(index)} type='submit'>Remove</button>
+                 <button onClick={bundleSortSubmit} type='submit'>Save</button>
+                 <button onClick={()=>handleSortRemove(index)} type='submit'>Remove</button>
 
 
 
@@ -1314,7 +1791,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='totalPost' placeholder='Total Post' value={input.totalPost} type="number" onChange={e=>handleCouponChangeInput(index,e)} />
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='totalPost' placeholder='Total Post' value={input.totalPost} type="number" onChange={e=>handleBothCoupon(index,e)} />
             <input class=" form-control
                  
                  w-60
@@ -1329,7 +1806,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='code' placeholder='Coupon Code' value={input.code} type="text" onChange={e=>handleCouponChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='couponCode' placeholder='Coupon Code' value={input.couponCode} type="text" onChange={e=>handleBothCoupon(index,e)}/>
               <input class=" form-control
                  
                  w-60
@@ -1344,7 +1821,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='inTime' placeholder='In Time' value={input.inTime} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='inTime' placeholder='In Time' value={input.inTime} type="number" onChange={e=>handleBothCoupon(index,e)}/>
               <input class=" form-control
                  
                  w-60
@@ -1359,7 +1836,7 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='disAmount' placeholder='Dicount Amount' value={input.disAmount} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='discAmount' placeholder='Dicount Amount' value={input.discAmount} type="number" onChange={e=>handleBothCoupon(index,e)}/>
               <input class=" form-control
                  
                  w-60
@@ -1374,10 +1851,18 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='validDays' placeholder='Valid Days' value={input.validDays} type="number" onChange={e=>handleCouponChangeInput(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='validDays' placeholder='Valid Days' value={input.validDays} type="number" onChange={e=>handleBothCoupon(index,e)}/>
+                  <div class="form-check form-check-inline">
+    <input class="form-check-input  appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="status" id="inlineRadio1" value="true" onChange={e=>handleBothCoupon(index,e)}/>
+    <label class="form-check-label inline-block text-gray-800" for="inlineRadio10">Active </label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input  appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="status" id="inlineRadio2" value="false" onChange={e=>handleBothCoupon(index,e)}/>
+    <label class="form-check-label inline-block text-gray-800" for="inlineRadio20">Inactive</label>
+  </div>
 
 
-                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={handleCouponSubmit} type='submit'>Save</button>
+                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={bundleCouponSubmit} type='submit'>Save</button>
                  <button class="inline-block px-6 py-2.5  bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleRemoveCoupon(index)} type='submit'>Remove</button>
 
 
@@ -1425,29 +1910,19 @@ async function addBundle(formdata){
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='vatPer' placeholder='Vat Percentage' value={input.vatPer} type="number" onChange={e=>handleVatChangeInput(index,e)} />
-            <select class=" form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='status' placeholder='Status' value={input.status} type="number" onChange={e=>handleVatChangeInput(index,e)}>
-                  <option>Active</option>
-                  <option>Inactive</option>
-                  </select>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='addVat' placeholder='Vat Percentage' value={input.addVat} type="number" onChange={e=>handleBothVat(index,e)} />
+       <div class="form-check form-check-inline">
+    <input class="form-check-input  appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="status" id="inlineRadio1" value="true" onChange={e=>handleBothVat(index,e)}/>
+    <label class="form-check-label inline-block text-gray-800" for="inlineRadio10">Active </label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input  appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="status" id="inlineRadio2" value="false" onChange={e=>handleBothVat(index,e)}/>
+    <label class="form-check-label inline-block text-gray-800" for="inlineRadio20">Inactive</label>
+  </div>
              
 
 
-                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={handleVatSubmit} type='submit'>Save</button>
+                 <button class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" onClick={bundleVatSubmit} type='submit'>Save</button>
                  <button class="inline-block px-6 py-2.5  bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out" onClick={()=>handleRemoveVat(index)} type='submit'>Remove</button>
 
 

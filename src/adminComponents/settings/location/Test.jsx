@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Test = () => {
+const Test = ( ) => {
   const [inputValues, setInputValues] = useState([]);
 
   const handleAddInput = () => {
@@ -14,6 +14,8 @@ const Test = () => {
   };
 
   return (
+
+    <>
     <div>
       {inputValues.map((inputValue, index) => (
         <div key={index}>
@@ -26,6 +28,10 @@ const Test = () => {
       ))}
       <button onClick={handleAddInput}>+</button>
     </div>
+  
+
+    </>
+
   );
 };
 

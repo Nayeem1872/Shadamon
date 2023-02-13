@@ -7,8 +7,8 @@ import cover from "../../assets/cover.jpg"
 
 const Advertisement = () => {
   return (
-    <div className= "mt-[50px]">
-    <img src={ad} alt="" />
+    <div className= "">
+    <img  src={ad} alt="" />
     <div className="my-4 p-2 rounded-lg">
       <h2 className="font-bold py-2 text-sm tracking-tight">
         Chat or Send message
