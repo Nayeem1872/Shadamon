@@ -4,11 +4,16 @@ import Navbar from '../../navbar/Navbar';
 import axios from 'axios';
 
 import api from '../../../apiEndpoint/apiEndpoint'
-import { Traffic } from '@mui/icons-material';
+
+import GetBundle from './GetBundle';
+import Select from "react-select";
+
 
 const Package = () => {
   // const [abc, setAbc] = useState("some default value");
 // single page Add Button
+const [selectedOption, setSelectedOption] = useState("");
+
   const [inputFields,setInputFields] = useState([
     {subcategories1:'', reach:'',click:'', price:'',minAmount:'',reach1:'',click1:'', price1:'',minAmount1:''},
   
@@ -53,11 +58,11 @@ const handleBothInput = (index,e)=>{
 
 }
 
-const handleBothSubmit = ()=>{
+// const handleBothSubmit = ()=>{
 
-  handleSingleSubmit()
-  bundleSignalSubmit()
-}
+//   handleSingleSubmit()
+//   bundleSignalSubmit()
+// }
 
 // put subcat into option
 const [subCat,setsubCat]= useState ([]);
@@ -97,6 +102,12 @@ const onInputSignalChange =(e)=>{
 
 const dataSignalobj = ()=>{
 
+  let allSelectedSubCat = []
+  console.log(selectedOption)
+  selectedOption.map(ee=>{
+    allSelectedSubCat.push(ee.value)
+  })
+
  
 
   let addData = {}
@@ -104,7 +115,7 @@ const dataSignalobj = ()=>{
  
 
 
-    subcategories:dataSignal.subcategories1,
+    subcategories:allSelectedSubCat,
     promote:{
       price:dataSignal.price,
       reach:dataSignal.reach,
@@ -516,13 +527,31 @@ const fetchSubCat =async()=>{
     const reqData = await axios.get( `${api.url}/admin/allsubcategory`,{withCredentials:true});
     console.log(reqData)
     setSub(reqData.data.data)
-    fetchParent();
+
+    // fetchParent();
+
+    
 
   }catch(error){
 
       console.log(error)
   }
 }
+const options = [];
+sub.map(subCat=>{
+  let obj = {
+    value:subCat._id,
+    label:subCat.subCategoryName
+  }
+  options.push(obj)
+})
+
+
+  var handleChange = (selectedOption) => {
+    // console.log(selectedOption);
+    setSelectedOption(selectedOption);
+    console.log(selectedOption)
+  };
 
 // handle subCat/Sort
 const handleSubCatSort =()=>{
@@ -625,8 +654,7 @@ const bundleSubmit = (e)=>{
 
 
 
-const [status, setStatus] = useState(true);
-
+// Handle multi
 
 
 
@@ -748,6 +776,12 @@ const [status, setStatus] = useState(true);
 
 
   <button type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalXl" onClick={()=>fetchSubCat()} >+ ADD NEW</button>
+
+
+  <div>
+  <GetBundle />
+</div>
+
 
   <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-xl relative w-auto pointer-events-none">
@@ -1351,10 +1385,10 @@ const [status, setStatus] = useState(true);
                  ease-in-out
                  m-0
                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='note' placeholder='Note'  type="text" onChange={(e) => onInputChange(e)}/>
-                <select name="packageStatus" id="" value={status} onChange={(e) => setStatus(e.target.value === "true")}>
+                {/* <select name="packageStatus" id="" value={status} onChange={(e) => setStatus(e.target.value === "true")}>
     <option value="true">Active</option>
     <option value="false">Inactive</option>
-  </select>
+  </select> */}
       </div>
       
 
@@ -1403,7 +1437,7 @@ const [status, setStatus] = useState(true);
      
           <div class="flex flex-col">
   <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+    <div class=" inline-block min-w-full sm:px-6 lg:px-8">
       <div class="overflow-hidden">
         <table class="min-w-full">
           <thead class="border-b">
@@ -1430,45 +1464,19 @@ const [status, setStatus] = useState(true);
           </thead>
           <tbody>
             <tr class="bg-white border-b">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <td class=" whitespace-nowrap text-sm font-medium text-gray-900 ">
                 
                 <div class="relative w-64">
                 
-                <select class="
-        
-        form-control
                
-               w-60
-               px-3
-               py-1.5
-               text-base
-               font-normal
-               text-gray-700
-               bg-white bg-clip-padding
-               border border-solid border-gray-300
-               rounded
-               transition
-               ease-in-out
-               m-0
-               focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='subcategories1' value={input.subcategories1} type="text" 
-               onChange={e=>handleBothInput(index,e)}> 
-               {sub.map(sub=>(
+               
 
 
-                 <option value={sub._id}>  
-             
-                {sub.subCategoryName}
-                 
-                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                   <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293l-3.293 3. 293 3. 293-3. 293z"/></svg>
-                 </div>
-               
-               
-               </option>
+               <Select name='subcategories' isMulti onChange={handleChange} options={options} />
 
-))}
+
                
-               </select>
+              
                
 </div>
                 </td>
@@ -1624,6 +1632,17 @@ const [status, setStatus] = useState(true);
             </tr>
           </tbody>
         </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
       </div>
     </div>
   </div>
@@ -1956,20 +1975,6 @@ const [status, setStatus] = useState(true);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
   
   
   </div>

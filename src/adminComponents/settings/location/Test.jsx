@@ -1,33 +1,30 @@
 import React, { useState } from "react";
+import {MultiSelect}from "react-multi-select-component";
 
 const Test = ( ) => {
-  const [inputValues, setInputValues] = useState([]);
+  const options = [
+    { label: "Option 1", value: 1 },
+    { label: "Option 2", value: 2 },
+    { label: "Option 3", value: 3 },
+    { label: "Option 4", value: 4 }
+  ];
+  
 
-  const handleAddInput = () => {
-    setInputValues([...inputValues, ""]);
-  };
-
-  const handleInputChange = (e, index) => {
-    const values = [...inputValues];
-    values[index] = e.target.value;
-    setInputValues(values);
-  };
+    const [selected, setSelected] = useState([]);
+  
+    const handleChange = selectedOptions => {
+      setSelected(selectedOptions.map(option => option.value));
+    };
 
   return (
 
     <>
-    <div>
-      {inputValues.map((inputValue, index) => (
-        <div key={index}>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => handleInputChange(e, index)}
-          />
-        </div>
-      ))}
-      <button onClick={handleAddInput}>+</button>
-    </div>
+     <MultiSelect
+      options={options}
+      // value={selected}
+      onChange={handleChange}
+      // labelledBy={"Select"}
+    />
   
 
     </>
