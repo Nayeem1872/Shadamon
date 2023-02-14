@@ -6,13 +6,18 @@ import axios from 'axios';
 import api from '../../../apiEndpoint/apiEndpoint'
 
 import GetBundle from './GetBundle';
+import GetSort from './GetSort';
+import GetCoupon from './GetCoupon';
 import Select from "react-select";
+
 
 
 const Package = () => {
   // const [abc, setAbc] = useState("some default value");
 // single page Add Button
 const [selectedOption, setSelectedOption] = useState("");
+
+const [selectSort,SetSelectSort] = useState("")
 
   const [inputFields,setInputFields] = useState([
     {subcategories1:'', reach:'',click:'', price:'',minAmount:'',reach1:'',click1:'', price1:'',minAmount1:''},
@@ -170,12 +175,24 @@ const onInputSortChange =(e)=>{
 
 const dataSortobj = ()=>{
 
- 
+ let allSelectedSort = []
+ console.log(selectSort)
+ selectSort.map(ee=>{
+  allSelectedSort.push(ee.value)
+ })
+ let allSelectedSubCat = []
+ console.log(selectedOption)
+ selectedOption.map(ee=>{
+   allSelectedSubCat.push(ee.value)
+ })
+
+
+
 
   let addData = {}
   addData={
-    subcategories:dataSort.subcategories,
-    sortId:dataSort.sortId,
+    subcategories:allSelectedSubCat,
+    sortId:allSelectedSort,
     price:dataSort.price,
 
 
@@ -514,6 +531,35 @@ const fetchSort =async()=>{
       console.log(error)
   }
 }
+const sortOptions = []
+sort1.map(sort=>{
+  let obj = {
+    value:sort._id,
+    label:sort.sortName
+
+
+  }
+
+sortOptions.push(obj)
+console.log(obj)
+
+})
+
+
+var handleSortChange =(select)=>{
+
+SetSelectSort(select)
+console.log(selectSort)
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -537,6 +583,12 @@ const fetchSubCat =async()=>{
       console.log(error)
   }
 }
+
+
+
+
+
+
 const options = [];
 sub.map(subCat=>{
   let obj = {
@@ -731,6 +783,7 @@ const bundleSubmit = (e)=>{
   </li>
   <li class="nav-item" role="presentation">
     <a href="#tabs-messages4" class="
+
       nav-link
       w-full
       block
@@ -1684,66 +1737,21 @@ const bundleSubmit = (e)=>{
 
 
   {/* Sorts */}
-  <div class="tab-pane fade" id="tabs-messages3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
-  <button type="button" class="inline-block px-6 py-2.5  bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSortFields()}>
+  <div class="tab-pane fade " id="tabs-messages3" role="tabpanel" aria-labelledby="tabs-profile-tab3">
+  <button type="button" class="inline-block px-6 py-2.5  mx-2 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSortFields()}>
     + Add New
   </button>
-    <div class="">
+    <div class=" mt-2 mx-2">
     <form class="" onSubmit={handleSortSubmit}>
       {sort.map((input,index)=>(
         <div class="flex gap-3"  key={index}>
 
-          <select class="
-        
-          form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='subcategories' lable="category" value={input.subcategories} type="text" onChange={e=>handleBothInput1(index,e)}>
- {sub.map(sub=>(
+<Select name='subcategories' isMulti onChange={handleChange} options={options} />
 
 
-<option value={sub._id}>{sub.subCategoryName}</option>
-
-))}
-</select>
+<Select name='sortId' isMulti onChange={handleSortChange} options={sortOptions} />
 
 
-            <select class=" form-control
-                 
-                 w-60
-                 px-3
-                 py-1.5
-                 text-base
-                 font-normal
-                 text-gray-700
-                 bg-white bg-clip-padding
-                 border border-solid border-gray-300
-                 rounded
-                 transition
-                 ease-in-out
-                 m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='sortId' lable="Sort" value={input.sortId} type="text" onChange={e=>handleBothInput1(index,e)}>
-                  
-                  {sort1.map(sort=>(
-
-                    <option value={sort._id}>{sort.sortName} </option>
-
-                  ))}
-                  
-                  
-                  
-                   </select>
               <input class=" form-control
                  
                  w-60
@@ -1758,7 +1766,7 @@ const bundleSubmit = (e)=>{
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='price' lable="Per Day Price" value={input.price} type="number" onChange={e=>handleBothInput1(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='price' placeholder='Per Day Price' value={input.price} type="number" onChange={e=>handleBothInput1(index,e)}/>
 
 
                  <button onClick={bundleSortSubmit} type='submit'>Save</button>
@@ -1779,6 +1787,7 @@ const bundleSubmit = (e)=>{
 
       )) }
      </form>
+     <GetSort />
 
     </div>
   </div>
@@ -1855,7 +1864,7 @@ const bundleSubmit = (e)=>{
                  transition
                  ease-in-out
                  m-0
-                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='discAmount' placeholder='Dicount Amount' value={input.discAmount} type="number" onChange={e=>handleBothCoupon(index,e)}/>
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name='discAmount' placeholder='Discount Amount' value={input.discAmount} type="number" onChange={e=>handleBothCoupon(index,e)}/>
               <input class=" form-control
                  
                  w-60
@@ -1899,6 +1908,7 @@ const bundleSubmit = (e)=>{
 
       )) }
      </form>
+     <GetCoupon />
 
     </div>
   </div>
