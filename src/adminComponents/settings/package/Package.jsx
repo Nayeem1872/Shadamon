@@ -1480,7 +1480,7 @@ const bundleSubmit = (e)=>{
   <button type="button" class="inline-block px-6 py-2.5  bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSingleFields()}>
     + Add New
   </button>
-    <div class="">
+    <div class="mt-2">
 
     <form class="" onSubmit={handleSingleSubmit}>
       {inputFields.map((input,index)=>(
@@ -1741,7 +1741,7 @@ const bundleSubmit = (e)=>{
   <button type="button" class="inline-block px-6 py-2.5  mx-2 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" onClick={()=>handleAddSortFields()}>
     + Add New
   </button>
-    <div class=" mt-2 mx-2">
+    <div class=" mt-3 mx-2">
     <form class="" onSubmit={handleSortSubmit}>
       {sort.map((input,index)=>(
         <div class="flex gap-3"  key={index}>

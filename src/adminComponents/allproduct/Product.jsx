@@ -5,6 +5,7 @@ import "./product.scss"
 import  { useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import GetProduct from "./GetProduct"
 
 import './product.scss';
 const Product = () => {
@@ -361,6 +362,8 @@ const Product = () => {
 
 
         </div>
+
+        <GetProduct />
         </div>
         </div>
 
