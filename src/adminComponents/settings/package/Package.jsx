@@ -9,6 +9,7 @@ import GetBundle from './GetBundle';
 import GetSort from './GetSort';
 import GetCoupon from './GetCoupon';
 import Select from "react-select";
+import GetSingle from './GetSingle';
 
 
 
@@ -1730,7 +1731,7 @@ const bundleSubmit = (e)=>{
       )) }
      </form>
 
-
+<GetSingle />
 
     </div>
   </div>

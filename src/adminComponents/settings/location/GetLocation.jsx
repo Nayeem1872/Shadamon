@@ -68,7 +68,7 @@ const toggleDetails = name => {
   });
 };
 
-// Get Sub Location
+// Get Location
 const [sub, setSub] = useState([]);
 
 useEffect(()=>{
@@ -92,14 +92,30 @@ useEffect(()=>{
   
   
   },[])
+// Get sub location
+const [subLocation,setSubLocation]=useState([])
 
+const fetchData = async (x) => {
+  console.log(x)
+  try {
+    const reqData = await axios.get(`${api.url}/product/getsublocation/${x}`, { withCredentials: true });
+    setSubLocation(reqData.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+console.log(subLocation)
 
+const handleClick = () => {
+  fetchData();
+};
   
   
   return (
 
        <>
+        <button onClick={handleClick}>Fetch Data</button>
        <div class="flex flex-col">
   <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
